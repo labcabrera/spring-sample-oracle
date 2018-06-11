@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mapfre.dgtp.samples.pljpa.model.Participant;
+import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJdbc;
 import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJpa;
+import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJpaNamed;
 
 @RestController
 @RequestMapping("/api/participants")
@@ -17,9 +19,25 @@ public class ParticipantController {
 	@Autowired
 	private ParticipantServiceJpa serviceJpa;
 
-	@GetMapping
+	@Autowired
+	private ParticipantServiceJpaNamed serviceJpaNamed;
+
+	@Autowired
+	private ParticipantServiceJdbc serviceJdbc;
+
+	@GetMapping("/jdbc")
+	public List<Participant> findJdbc() {
+		return serviceJdbc.findAll();
+	}
+
+	@GetMapping("/jpa")
 	public List<Participant> findJpa() {
 		return serviceJpa.findAll();
+	}
+
+	@GetMapping("/sp")
+	public List<Participant> findStoredProcedure() {
+		return serviceJpaNamed.findAll();
 	}
 
 }

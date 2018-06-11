@@ -22,7 +22,6 @@ import oracle.jdbc.internal.OracleTypes;
 @Slf4j
 public class ClaimServiceJdbc implements ClaimService {
 
-	// private final DataSource dataSource;
 	private final SimpleJdbcCall jdbcCall;
 
 	public ClaimServiceJdbc(DataSource dataSource) {

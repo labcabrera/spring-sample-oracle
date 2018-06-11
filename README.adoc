@@ -20,3 +20,4 @@ END MPG_K_EX_SINIESTRO_ACCIDENTE;
 == References
 
 * http://markchensblog.blogspot.com/2015/03/use-spring-simplejdbccall-to-invoke.html
+* http://forum.spring.io/forum/spring-projects/data/74391-simplejdbccall-to-call-oracle-function-returning-ref-cursor
