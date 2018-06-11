@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,10 +15,14 @@ import oracle.jdbc.pool.OracleDataSource;
 @Slf4j
 public class DatabaseConfiguration {
 
-	// TODO configuration
-	private String url = "jdbc:oracle:thin:@vles044273-011:1521:OBRDVL";
-	private String userName = "MPD_LD";
-	private String password = "MPD_LD";
+	@Value("${app.env.datasource.url}")
+	private String url;
+
+	@Value("${app.env.datasource.username}")
+	private String userName;
+
+	@Value("${app.env.datasource.password}")
+	private String password;
 
 	@Bean
 	DataSource dataSource() throws SQLException {
