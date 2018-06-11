@@ -16,3 +16,7 @@ CREATE OR REPLACE package body MPD_LD.MPG_K_EX_SINIESTRO_ACCIDENTE is
 	END;
 END MPG_K_EX_SINIESTRO_ACCIDENTE;
 ----
+
+== References
+
+* http://markchensblog.blogspot.com/2015/03/use-spring-simplejdbccall-to-invoke.html

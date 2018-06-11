@@ -10,6 +10,9 @@ import javax.persistence.SqlResultSetMapping;
 
 import lombok.Data;
 
+/**
+ * Representa un siniestro.
+ */
 @Entity
 @Data
 @NamedNativeQuery(name = "fn_post_and_comments",
@@ -17,20 +20,20 @@ import lombok.Data;
 	resultSetMapping = "post_and_comments")
 @SqlResultSetMapping(name = "post_and_comments",
 	entities = {
-		@EntityResult(entityClass = SiniestroAcc.class,
+		@EntityResult(entityClass = Claim.class,
 			fields = { @FieldResult(name = "id", column = "p.id"), @FieldResult(name = "title", column = "p.title"),
 				@FieldResult(name = "version", column = "p.version"), }),
-		@EntityResult(entityClass = SiniestroAcc.class,
+		@EntityResult(entityClass = Claim.class,
 			fields = { @FieldResult(name = "id", column = "c.id"), @FieldResult(name = "post", column = "c.post_id"),
 				@FieldResult(name = "version", column = "c.version"),
 				@FieldResult(name = "review", column = "c.review"), }) })
-public class SiniestroAcc {
+public class Claim {
 
 	@Id
 	@Column(name = "NUM_POLIZA", length = 13)
-	private String numPoliza;
+	private String NUM_POLIZA;
 
 	@Column(name = "COD_MEDIO", length = 1)
-	private String codMedio;
+	private String COD_MEDIO;
 
 }

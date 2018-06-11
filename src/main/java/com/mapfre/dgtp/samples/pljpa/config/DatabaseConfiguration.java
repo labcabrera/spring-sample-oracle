@@ -7,11 +7,13 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.pool.OracleDataSource;
 
 @Configuration
+@EnableJpaRepositories(basePackages = "com.mapfre.dgtp.samples.pljpa.repositories")
 @Slf4j
 public class DatabaseConfiguration {
 
