@@ -1,0 +1,18 @@
+= Ejemplo de acceso a Oracle usando Spring Data JPA
+
+
+
+----
+CREATE OR REPLACE package body MPD_LD.MPG_K_EX_SINIESTRO_ACCIDENTE is
+	-- 
+	--	Version mockeada del PL MPG_K_EX_SINIESTRO_ACCIDENTE.PR_PROCESA_PETICION
+	--
+	PROCEDURE PR_PROCESA_PETICION (P_R_SINIESTRO_ACC IN  T_R_SINIESTRO_ACC,
+								  O_NUM_EXPEDIENTE  OUT VARCHAR2,
+								  O_COD_ERROR       OUT VARCHAR2,
+								  O_TXT_ERROR       OUT VARCHAR2) IS
+	BEGIN
+		O_NUM_EXPEDIENTE := dbms_random.random;
+	END;
+END MPG_K_EX_SINIESTRO_ACCIDENTE;
+----
