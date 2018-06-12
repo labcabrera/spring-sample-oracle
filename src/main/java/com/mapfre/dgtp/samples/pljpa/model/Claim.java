@@ -15,18 +15,28 @@ import lombok.Data;
  */
 @Entity
 @Data
-@NamedNativeQuery(name = "fn_post_and_comments",
-	query = "{ ? = call fn_post_and_comments( ? ) }",
-	resultSetMapping = "post_and_comments")
-@SqlResultSetMapping(name = "post_and_comments",
+//@formatter:off
+@NamedNativeQuery(
+	name = "claim-insert",
+	query = "{ ? = call PL MPG_K_EX_SINIESTRO_ACCIDENTE.PR_PROCESA_PETICION(?,?,?,?) }",
+	resultSetMapping = "claim-result-set-mapping")
+@SqlResultSetMapping(
+	name = "claim-result-set-mapping",
 	entities = {
-		@EntityResult(entityClass = Claim.class,
-			fields = { @FieldResult(name = "id", column = "p.id"), @FieldResult(name = "title", column = "p.title"),
-				@FieldResult(name = "version", column = "p.version"), }),
-		@EntityResult(entityClass = Claim.class,
-			fields = { @FieldResult(name = "id", column = "c.id"), @FieldResult(name = "post", column = "c.post_id"),
-				@FieldResult(name = "version", column = "c.version"),
-				@FieldResult(name = "review", column = "c.review"), }) })
+		@EntityResult(
+			entityClass = Claim.class,
+			fields = {
+				@FieldResult(name = "field1", column = "p.someField1"),
+				@FieldResult(name = "field2", column = "p.someField2"),
+				@FieldResult(name = "field3", column = "p.someField3"), }),
+		@EntityResult(
+			entityClass = Claim.class,
+			fields = {
+				@FieldResult(name = "field1", column = "c.someField1"),
+				@FieldResult(name = "field2", column = "c.someField2"),
+				@FieldResult(name = "field3", column = "c.someField3"),
+				@FieldResult(name = "field4", column = "c.someField4"), }) })
+//@formatter:on
 public class Claim {
 
 	@Id

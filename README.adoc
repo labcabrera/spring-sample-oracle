@@ -17,7 +17,18 @@ CREATE OR REPLACE package body MPD_LD.MPG_K_EX_SINIESTRO_ACCIDENTE is
 END MPG_K_EX_SINIESTRO_ACCIDENTE;
 ----
 
+
+
+ FUNCTION f_add(A IN NUMBER, B IN NUMBER) RETURN NUMBER IS
+ BEGIN
+	 RETURN A + B;
+ END f_add;
+
+
 == References
 
 * http://markchensblog.blogspot.com/2015/03/use-spring-simplejdbccall-to-invoke.html
 * http://forum.spring.io/forum/spring-projects/data/74391-simplejdbccall-to-call-oracle-function-returning-ref-cursor
+* https://docs.spring.io/spring/docs/2.5.x/reference/jdbc.html#jdbc-simple-jdbc-call-1
+
+* https://github.com/spring-projects/spring-data-jdbc-ext/blob/master/spring-data-oracle/src/main/java/org/springframework/data/jdbc/support/oracle/BeanPropertyStructMapper.java

@@ -15,15 +15,15 @@ import lombok.Setter;
 @Entity
 @Table(name = "MPD_GEN_PARTICIPANTE")
 //@formatter:off
-@NamedStoredProcedureQueries({
-	@NamedStoredProcedureQuery(
-		name = Participant.NamedQueries.FIND,
-		procedureName = "MPD_LD.dl_gnl_par.f_get",
-		resultClasses = { Participant.class },
-		parameters = {
-			@StoredProcedureParameter(name = "p_o_amd_gnl_par_s", type = Participant.class, mode = ParameterMode.IN),
-			@StoredProcedureParameter(name = "O_AMD_GNL_PAR_ST", type = Participant.class, mode = ParameterMode.OUT) }),
-	})
+	@NamedStoredProcedureQueries({
+		@NamedStoredProcedureQuery(
+			name = Participant.NamedQueries.FIND,
+			procedureName = "MPD_LD.dl_gnl_par.f_get",
+			resultClasses = { Participant.class },
+			parameters = {
+				@StoredProcedureParameter(name = "p_o_amd_gnl_par_s", type = Participant.class, mode = ParameterMode.IN),
+				@StoredProcedureParameter(name = "O_AMD_GNL_PAR_ST", type = Participant.class, mode = ParameterMode.OUT) }),
+		})
 //@formatter:on
 @Getter
 @Setter

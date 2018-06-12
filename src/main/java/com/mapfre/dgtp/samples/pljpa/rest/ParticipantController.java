@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mapfre.dgtp.samples.pljpa.model.Participant;
 import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJdbc;
+import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJdbcBasic;
 import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJpa;
 import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJpaNamed;
 
@@ -17,17 +18,25 @@ import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJpaNamed;
 public class ParticipantController {
 
 	@Autowired
+	private ParticipantServiceJdbc serviceJdbc;
+
+	@Autowired
+	private ParticipantServiceJdbcBasic serviceJdbcBasic;
+
+	@Autowired
 	private ParticipantServiceJpa serviceJpa;
 
 	@Autowired
 	private ParticipantServiceJpaNamed serviceJpaNamed;
 
-	@Autowired
-	private ParticipantServiceJdbc serviceJdbc;
-
 	@GetMapping("/jdbc")
 	public List<Participant> findJdbc() {
 		return serviceJdbc.findAll();
+	}
+
+	@GetMapping("/jdbc-basic")
+	public List<Participant> findJdbcBasic() {
+		return serviceJdbcBasic.findAll();
 	}
 
 	@GetMapping("/jpa")
