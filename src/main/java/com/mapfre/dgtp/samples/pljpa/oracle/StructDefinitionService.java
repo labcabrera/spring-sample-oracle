@@ -1,4 +1,4 @@
-package com.mapfre.dgtp.samples.pljpa;
+package com.mapfre.dgtp.samples.pljpa.oracle;
 
 import java.sql.Connection;
 import java.util.HashMap;

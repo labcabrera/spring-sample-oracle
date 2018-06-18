@@ -4,8 +4,8 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-import com.mapfre.dgtp.samples.pljpa.StructDefinitionService;
 import com.mapfre.dgtp.samples.pljpa.model.Participant;
+import com.mapfre.dgtp.samples.pljpa.oracle.StructDefinitionService;
 
 @Repository
 public class ParticipantFunctionService {

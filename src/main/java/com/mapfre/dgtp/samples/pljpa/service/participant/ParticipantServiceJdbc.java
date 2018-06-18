@@ -59,7 +59,7 @@ public class ParticipantServiceJdbc implements ParticipantService {
 		log.info("Executing query");
 
 		Participant queryObject = new Participant();
-		queryObject.setId(1L);
+		//queryObject.setId(1L);
 
 		try {
 			Connection connection = jdbcCall.getJdbcTemplate().getDataSource().getConnection();

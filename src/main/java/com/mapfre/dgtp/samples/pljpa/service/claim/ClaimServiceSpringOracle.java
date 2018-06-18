@@ -4,9 +4,9 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-import com.mapfre.dgtp.samples.pljpa.StructDefinitionService;
 import com.mapfre.dgtp.samples.pljpa.model.OSinAccInS;
 import com.mapfre.dgtp.samples.pljpa.model.OSinAccOutS;
+import com.mapfre.dgtp.samples.pljpa.oracle.StructDefinitionService;
 
 @Repository
 public class ClaimServiceSpringOracle {

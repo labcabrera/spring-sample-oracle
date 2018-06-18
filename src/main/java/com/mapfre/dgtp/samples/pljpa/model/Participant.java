@@ -35,11 +35,11 @@ public class Participant {
 
 	@Id
 	@Column(name = "COD_PART_PROC")
-	private Long id;
+	private Long par_prc_prc_val;
 
 	@Column(name = "NOM_PART_PROC")
-	private String name;
+	private String nam_par_prc;
 
 	@Column(name = "DES_PART_PROC")
-	private String desc;
+	private String dsp_par_prc;
 }

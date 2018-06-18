@@ -13,8 +13,8 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.util.StringUtils;
 
-import com.mapfre.dgtp.samples.pljpa.StructDefinitionService;
 import com.mapfre.dgtp.samples.pljpa.annotation.OracleStruct;
+import com.mapfre.dgtp.samples.pljpa.oracle.StructDefinitionService;
 
 import lombok.extern.slf4j.Slf4j;
 import oracle.sql.STRUCT;
