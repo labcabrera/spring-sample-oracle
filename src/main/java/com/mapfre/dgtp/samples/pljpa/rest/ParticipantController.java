@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mapfre.dgtp.samples.pljpa.model.Participant;
+import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantFunctionService;
 import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJdbc;
 import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJdbcBasic;
 import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJpa;
@@ -28,6 +29,15 @@ public class ParticipantController {
 
 	@Autowired
 	private ParticipantServiceJpaNamed serviceJpaNamed;
+
+	@Autowired
+	private ParticipantFunctionService participantFunctionService;
+
+	@GetMapping("/oracle-function")
+	public Object findOracleFunction() {
+		Participant beanQuery = new Participant();
+		return participantFunctionService.find(beanQuery);
+	}
 
 	@GetMapping("/jdbc")
 	public List<Participant> findJdbc() {
