@@ -75,6 +75,7 @@ public class BeanPropertyStructMapper<T> implements StructMapper<T> {
 	 * @see #setMappedClass
 	 */
 	public BeanPropertyStructMapper() {
+		logger.info("Created new BeanPropertyStructMapper");
 	}
 
 	/**
@@ -83,6 +84,7 @@ public class BeanPropertyStructMapper<T> implements StructMapper<T> {
 	 */
 	public BeanPropertyStructMapper(Class<T> mappedClass) {
 		initialize(mappedClass);
+		logger.info("Created new BeanPropertyStructMapper from " + mappedClass.getName());
 	}
 
 	/**
