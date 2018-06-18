@@ -19,7 +19,7 @@ public class OSinAccInS implements Serializable {
 	/**
 	 * numpoliza Property
 	 */
-	private String numPoliza;
+	private String NUM_POLIZA;
 
 	/**
 	 * codmedio Property
@@ -39,7 +39,7 @@ public class OSinAccInS implements Serializable {
 	/**
 	 * fecocurrencia Property
 	 */
-	private Date fecOcurrencia;
+	private Date FEC_OCURRENCIA;
 
 	/**
 	 * horaocurrencia Property

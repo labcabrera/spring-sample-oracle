@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mapfre.dgtp.samples.pljpa.model.Participant;
-import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJdbc;
-import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJdbcBasic;
-import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJpa;
-import com.mapfre.dgtp.samples.pljpa.service.impl.ParticipantServiceJpaNamed;
+import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJdbc;
+import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJdbcBasic;
+import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJpa;
+import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJpaNamed;
 
 @RestController
 @RequestMapping("/api/participants")

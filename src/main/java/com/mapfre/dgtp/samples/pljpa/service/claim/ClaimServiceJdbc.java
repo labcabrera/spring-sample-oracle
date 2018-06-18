@@ -1,4 +1,4 @@
-package com.mapfre.dgtp.samples.pljpa.service.impl;
+package com.mapfre.dgtp.samples.pljpa.service.claim;
 
 import java.sql.Types;
 import java.util.Map;
