@@ -1,4 +1,96 @@
-= Ejemplo de acceso a Oracle usando Spring Data JPA
+= Ejemplo de acceso a procedimientos de Oracle
+
+== Introduccion
+
+Este es un ejemplo de diferentes formas de invocar logicas de negocio en Oracle a través de JDBC utilizando:
+
+* JDBC: estándar de java sin utilizar librerías externas.
+* Spring JDBC: ejemplo de uso de la clase `SimpleJdbcCall` de Spring Data para simplificar las operaciones JDBC.
+* https://github.com/spring-projects/spring-data-jdbc-ext/[Spring Oracle]: librería descontinuada de Spring para Oracle.
+* JPA: acceso directo a las tablas sin utilizar las lógicas de negocio de Oracle.
+
+En este ejemplo veremos:
+
+* Ejemplos de acceso utilizando procedimientos almacenados
+* Ejemplos de acceso utilizando funciones.
+* Comportamiento con beans con estructuras anidadas complejas. 
+
+== Participantes
+
+A la hora de definir la entidad con el que mapearemos los resultaos tenemos que tener en cuenta dos cosas:
+
+* En el caso de acceder a través de *procedimientos almacenados* no utilizaremos la estructura de la tabla, sino la de los objetos de negocio de Oracle.
+* En el caso de acceder a través de *JPA* los mapeos los realizaremos contra la estrutura de la tabla, no contra el objeto de negocio.
+
+En este caso tendremos (conste que esto es sólo un ejemplo y que por lo general nunca se utilizará el mismo bean para representar tanto una tabla como
+un objeto de negocio de Oracle):
+
+[code,java]
+----
+@Entity
+@Table(name = "MPD_GEN_PARTICIPANTE")
+public class Participant {
+
+	@Id
+	@Column(name = "COD_PART_PROC")
+	private Long par_prc_prc_val;
+
+	@Column(name = "NOM_PART_PROC")
+	private String nam_par_prc;
+
+	@Column(name = "DES_PART_PROC")
+	private String dsp_par_prc;
+}
+----
+
+siendo por ejemplo:
+
+|===
+|COD_PART_PROC    | Nombre del identificador de la tabla de participantes Oracle
+|par_prc_prc_val  | Nombre del identificador del objeto de negocio de Oracle.
+|===
+
+Al utilizar la librería de Spring Oracle es necesario que los *nombres de las entidades coincidan con los que se han definido en los objetos de negocio de Oracle*.
+Sería posible implementar nuestro propio
+https://github.com/spring-projects/spring-data-jdbc-ext/blob/master/spring-data-oracle/src/main/java/org/springframework/data/jdbc/support/oracle/BeanPropertyStructMapper.java[BeanPropertyStructMapper]
+para poder utilizar otras estrategias a la hora de mapear los campos (por ejemplo basadas en anotaciones al estilo JPA), aunque esto se sale del
+propósito del ejemplo.
+
+
+=== Acceso utilizando Spring Oracle
+
+En este caso para cada procedimiento almacenado tendremos que extender la clase `org.springframework.jdbc.object.StoredProcedure` (incluso en el caso de que
+estemos invocando una función de Oracle en lugar de un procedimiento almacenado) del siguiente modo:
+
+[code,java]
+----
+public class ParticipantOracleReadProcedure extends StoredProcedure {
+
+	private static final String FUNCTION_NAME = "dl_gnl_par.f_get";
+
+	private final GaiaStructMapper<Participant> structMapper;
+
+	public ParticipantOracleReadProcedure(DataSource dataSource, StructDefinitionService definitionService) {
+		super(dataSource, FUNCTION_NAME);
+		this.structMapper = new GaiaStructMapper<>(Participant.class, definitionService);
+
+		SqlReturnArray sqlReturn = new SqlListStructArray<>(structMapper);
+
+		setFunction(true);
+		declareParameter(new SqlOutParameter("return", Types.ARRAY, "O_AMD_GNL_PAR_ST", sqlReturn));
+		declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, "O_AMD_GNL_PAR_S"));
+		compile();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Participant> find(Participant beanQuery) {
+		SqlStructValue<Participant> structValue = new SqlStructValue<>(beanQuery, structMapper);
+		Map<String, Object> resultMap = super.execute(structValue);
+		return (List<Participant>) resultMap.get("return");
+	}
+
+}
+----
 
 
 
