@@ -3,16 +3,20 @@ package com.mapfre.dgtp.samples.pljpa.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mapfre.dgtp.samples.pljpa.model.Participant;
-import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantFunctionService;
+import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantOracleProcedureService;
 import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJdbc;
 import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJdbcBasic;
 import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJpa;
-import com.mapfre.dgtp.samples.pljpa.service.participant.ParticipantServiceJpaNamed;
 
 @RestController
 @RequestMapping("/api/participants")
@@ -28,14 +32,19 @@ public class ParticipantController {
 	private ParticipantServiceJpa serviceJpa;
 
 	@Autowired
-	private ParticipantServiceJpaNamed serviceJpaNamed;
+	private ParticipantOracleProcedureService participantFunctionService;
 
-	@Autowired
-	private ParticipantFunctionService participantFunctionService;
+	@GetMapping("/oracle-function/:id")
+	public ResponseEntity<Participant> findSpringOracleById(@PathVariable Long id) {
+		Participant participant = participantFunctionService.findById(id);
+		if (participant == null) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
+		return ResponseEntity.ok(participant);
+	}
 
-	@GetMapping("/oracle-function")
-	public Object findOracleFunction() {
-		Participant beanQuery = new Participant();
+	@PostMapping("/oracle-function")
+	public List<Participant> findSpringOracle(@RequestBody Participant beanQuery) {
 		return participantFunctionService.find(beanQuery);
 	}
 
@@ -52,11 +61,6 @@ public class ParticipantController {
 	@GetMapping("/jpa")
 	public List<Participant> findJpa() {
 		return serviceJpa.findAll();
-	}
-
-	@GetMapping("/sp")
-	public List<Participant> findStoredProcedure() {
-		return serviceJpaNamed.findAll();
 	}
 
 }

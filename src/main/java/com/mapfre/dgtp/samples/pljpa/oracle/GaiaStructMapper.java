@@ -1,4 +1,4 @@
-package org.springframework.data.jdbc.support.oracle;
+package com.mapfre.dgtp.samples.pljpa.oracle;
 
 import java.beans.PropertyDescriptor;
 import java.sql.Connection;
@@ -10,17 +10,19 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.data.jdbc.support.oracle.BeanPropertyStructMapper;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.util.StringUtils;
 
 import com.mapfre.dgtp.samples.pljpa.annotation.OracleStruct;
-import com.mapfre.dgtp.samples.pljpa.oracle.StructDefinitionService;
 
 import lombok.extern.slf4j.Slf4j;
 import oracle.sql.STRUCT;
 import oracle.sql.StructDescriptor;
 
 @Slf4j
+// TODO definir sistema de lectura de propiedades basado en anotaciones en lugar de leer el descriptor de oracle a
+// traves de la conexion (tanto en el fromStruct como en el toStruct)
 public class GaiaStructMapper<T> extends BeanPropertyStructMapper<T> {
 
 	private final StructDefinitionService definitionService;
@@ -63,7 +65,7 @@ public class GaiaStructMapper<T> extends BeanPropertyStructMapper<T> {
 			}
 		}
 
-		// TODO recursive struct conversion
+		// Modified from spring-data-oracle to recursive struct conversion
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] == null) {
 				continue;

@@ -3,35 +3,28 @@ package com.mapfre.dgtp.samples.pljpa.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Entidad participante.
+ * 
+ * NOTA: para que funcione correctamente la conversion de tipos de Oracle (STRUTS) los nombres de los campos deben
+ * coincidir con los nombres definidos en Oracle. De momento no se ha implementado otro modo para poder resolver dichos
+ * mapeos aunque seria sencillo realizarlo a traves de anotaciones de un modo similar a JPA.
+ * 
+ * NOTA: hay que tener en cuenta que por un lado se estan mapeando los nombres de la tabla y por otro lado los nombres
+ * del objeto de Oracle de intercambio, que no coinciden. Por ello las anotaciones de JPA y los nombres no coinciden.
+ * 
+ * @author Arquitectura
+ */
 @Entity
 @Table(name = "MPD_GEN_PARTICIPANTE")
-//@formatter:off
-	@NamedStoredProcedureQueries({
-		@NamedStoredProcedureQuery(
-			name = Participant.NamedQueries.FIND,
-			procedureName = "MPD_LD.dl_gnl_par.f_get",
-			resultClasses = { Participant.class },
-			parameters = {
-				@StoredProcedureParameter(name = "p_o_amd_gnl_par_s", type = Participant.class, mode = ParameterMode.IN),
-				@StoredProcedureParameter(name = "O_AMD_GNL_PAR_ST", type = Participant.class, mode = ParameterMode.OUT) }),
-		})
-//@formatter:on
 @Getter
 @Setter
 public class Participant {
-
-	public interface NamedQueries {
-		String FIND = "participantFind";
-	}
 
 	@Id
 	@Column(name = "COD_PART_PROC")

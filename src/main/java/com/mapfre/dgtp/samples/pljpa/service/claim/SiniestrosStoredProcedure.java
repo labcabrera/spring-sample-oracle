@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.springframework.data.jdbc.support.oracle.GaiaStructMapper;
 import org.springframework.data.jdbc.support.oracle.SqlReturnStruct;
 import org.springframework.data.jdbc.support.oracle.SqlStructValue;
 import org.springframework.jdbc.core.SqlOutParameter;
@@ -15,6 +14,7 @@ import org.springframework.jdbc.object.StoredProcedure;
 
 import com.mapfre.dgtp.samples.pljpa.model.OSinAccInS;
 import com.mapfre.dgtp.samples.pljpa.model.OSinAccOutS;
+import com.mapfre.dgtp.samples.pljpa.oracle.GaiaStructMapper;
 import com.mapfre.dgtp.samples.pljpa.oracle.StructDefinitionService;
 
 public class SiniestrosStoredProcedure extends StoredProcedure {

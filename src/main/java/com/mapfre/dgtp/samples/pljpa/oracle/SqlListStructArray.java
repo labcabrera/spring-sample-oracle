@@ -12,6 +12,12 @@ import lombok.AllArgsConstructor;
 import oracle.sql.ARRAY;
 import oracle.sql.STRUCT;
 
+/**
+ * Implementacion de <code>SqlReturnArray</code> que transforma un array de STRUTS en un List de entidades.
+ * @author Arquitectura
+ *
+ * @param <T>
+ */
 @AllArgsConstructor
 public class SqlListStructArray<T> extends SqlReturnArray {
 
