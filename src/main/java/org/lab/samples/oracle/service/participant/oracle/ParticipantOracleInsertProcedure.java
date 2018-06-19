@@ -27,8 +27,8 @@ public class ParticipantOracleInsertProcedure extends StoredProcedure {
 		SqlReturnStruct sqlReturn = new SqlReturnStruct(structMapper);
 
 		setFunction(true);
-		declareParameter(new SqlOutParameter("return", Types.STRUCT, "O_AMD_GNL_PAR_S", sqlReturn));
-		declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, "O_AMD_GNL_PAR_S"));
+		declareParameter(new SqlOutParameter("return", Types.STRUCT, Participant.ORACLE_TYPE_NAME, sqlReturn));
+		declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, Participant.ORACLE_TYPE_NAME));
 		declareParameter(new SqlParameter("p_usr_val", Types.VARCHAR));
 
 		compile();

@@ -29,7 +29,7 @@ public class ClaimOracleStoredProcedure extends StoredProcedure {
 		this.requestMapper = new CustomStructMapper<OSinAccInS>(OSinAccInS.class, definitionService);
 		SqlReturnStruct sqlReturn = new SqlReturnStruct(OSinAccOutS.class);
 		declareParameter(new SqlParameter("P_O_SIN_ACC_IN_S", Types.STRUCT, "O_SIN_ACC_IN_S"));
-		declareParameter(new SqlOutParameter("P_O_SIN_ACC_OUT_S", Types.STRUCT, "O_SIN_ACC_OUT_S", sqlReturn));
+		declareParameter(new SqlOutParameter("return", Types.STRUCT, "O_SIN_ACC_OUT_S", sqlReturn));
 		compile();
 	}
 
@@ -37,7 +37,7 @@ public class ClaimOracleStoredProcedure extends StoredProcedure {
 		OSinAccInS request = (OSinAccInS) inParams[0];
 		Map in = Collections.singletonMap("P_O_SIN_ACC_IN_S", new SqlStructValue(request, requestMapper));
 		Map results = super.execute(in);
-		return (OSinAccOutS) results.get("P_O_SIN_ACC_OUT_S");
+		return (OSinAccOutS) results.get("return");
 	}
 
 }
