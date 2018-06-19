@@ -14,9 +14,8 @@ import oracle.sql.StructDescriptor;
  * necesario una llamada a la base de datos cada vez que se tiene que realizar una transformacion de STRUCT a una
  * entidad o de una entidad a un STRUCT.
  * 
- * @author Arquitectura
  */
-// TODO estudiar estrategias para almacenar el descriptor: cache, ficheros como arqos, etc.
+// TODO estudiar estrategias para almacenar el descriptor: cache, ficheros , etc.
 // TODO estudiar si se desea separar la parte de generacion de los ficheros de serializados o si es mejor generarlos una
 // unica vez bajo demanda cuando se solicita por primera vez un tipo dado.
 @Component
@@ -29,7 +28,6 @@ public class StructDefinitionService {
 		values = new HashMap<>();
 	}
 
-	// TODO check serialization
 	public StructDescriptor get(String typeName, Connection conn) {
 		try {
 			if (values.containsKey(typeName)) {

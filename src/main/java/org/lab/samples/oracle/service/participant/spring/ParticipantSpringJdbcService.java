@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.lab.samples.oracle.model.Participant;
+import org.lab.samples.oracle.model.participant.Participant;
 import org.lab.samples.oracle.service.participant.ParticipantService;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

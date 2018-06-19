@@ -1,4 +1,4 @@
-package org.lab.samples.oracle.model;
+package org.lab.samples.oracle.model.participant.claim;
 
 import java.io.Serializable;
 import java.util.List;

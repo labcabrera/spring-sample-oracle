@@ -1,9 +1,10 @@
 package org.lab.samples.oracle.service.claim;
 
-import org.lab.samples.oracle.model.Claim;
+import org.lab.samples.oracle.model.participant.claim.OSinAccInS;
+import org.lab.samples.oracle.model.participant.claim.OSinAccOutS;
 
 public interface ClaimService {
 
-	String execute(Claim siniestro);
+	OSinAccOutS execute(OSinAccInS claim);
 
 }

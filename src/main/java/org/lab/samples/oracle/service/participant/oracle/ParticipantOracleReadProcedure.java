@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 import org.lab.samples.oracle.internal.CustomStructMapper;
 import org.lab.samples.oracle.internal.SqlListStructArray;
 import org.lab.samples.oracle.internal.StructDefinitionService;
-import org.lab.samples.oracle.model.Participant;
+import org.lab.samples.oracle.model.participant.Participant;
 import org.springframework.data.jdbc.support.oracle.SqlReturnArray;
 import org.springframework.data.jdbc.support.oracle.SqlStructValue;
 import org.springframework.jdbc.core.SqlOutParameter;

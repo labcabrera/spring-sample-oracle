@@ -9,7 +9,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.lab.samples.oracle.model.Participant;
+import org.hibernate.cfg.NotYetImplementedException;
+import org.lab.samples.oracle.model.participant.Participant;
 import org.lab.samples.oracle.service.participant.ParticipantService;
 import org.springframework.stereotype.Service;
 
@@ -74,37 +75,31 @@ public class ParticipantJdbcService implements ParticipantService {
 		catch (SQLException ex) {
 			throw new RuntimeException(ex);
 		}
-
-		return null;
+		throw new NotYetImplementedException();
 	}
 
 	@Override
 	public List<Participant> find(Participant beanQuery) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotYetImplementedException();
 	}
 
 	@Override
 	public Participant findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotYetImplementedException();
 	}
 
 	@Override
 	public Participant insert(Participant entity) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotYetImplementedException();
 	}
 
 	@Override
 	public Participant update(Participant entity) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotYetImplementedException();
 	}
 
 	@Override
 	public Participant delete(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotYetImplementedException();
 	}
 }

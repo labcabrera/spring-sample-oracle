@@ -3,7 +3,7 @@ package org.lab.samples.oracle.service.participant.jpa;
 import java.util.List;
 import java.util.Optional;
 
-import org.lab.samples.oracle.model.Participant;
+import org.lab.samples.oracle.model.participant.Participant;
 import org.lab.samples.oracle.repositories.ParticipantRepository;
 import org.lab.samples.oracle.service.participant.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;

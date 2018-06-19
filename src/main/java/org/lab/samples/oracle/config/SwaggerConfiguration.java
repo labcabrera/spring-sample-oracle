@@ -12,7 +12,7 @@ public class SwaggerConfiguration {
 
 	@Bean
 	Docket docket() {
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.mapfre"))
-			.build();
+		return new Docket(DocumentationType.SWAGGER_2).select()
+			.apis(RequestHandlerSelectors.basePackage("org.lab.samples.oracle")).build();
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.lab.samples.oracle.internal.StructDefinitionService;
-import org.lab.samples.oracle.model.Participant;
+import org.lab.samples.oracle.model.participant.Participant;
 import org.lab.samples.oracle.service.participant.ParticipantService;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ public class ParticipantOracleService implements ParticipantService {
 		insertProcedure = new ParticipantOracleInsertProcedure(dataSource, definitionService);
 		updateProcedure = new ParticipantOracleUpdateProcedure(dataSource, definitionService);
 		deleteProcedure = new ParticipantOracleDeleteProcedure(dataSource, definitionService);
-		username = env.getProperty("app.env.audit.username", "LBARRA1");
+		username = env.getProperty("app.env.audit.username");
 	}
 
 	@Override

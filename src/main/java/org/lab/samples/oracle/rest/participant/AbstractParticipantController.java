@@ -1,8 +1,8 @@
-package org.lab.samples.oracle.rest;
+package org.lab.samples.oracle.rest.participant;
 
 import java.util.List;
 
-import org.lab.samples.oracle.model.Participant;
+import org.lab.samples.oracle.model.participant.Participant;
 import org.lab.samples.oracle.service.participant.ParticipantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

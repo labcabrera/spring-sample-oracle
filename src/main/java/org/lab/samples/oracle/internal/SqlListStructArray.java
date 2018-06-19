@@ -13,10 +13,9 @@ import oracle.sql.ARRAY;
 import oracle.sql.STRUCT;
 
 /**
- * Implementacion de <code>SqlReturnArray</code> que transforma un array de STRUTS en un List de entidades.
- * @author Arquitectura
+ * <code>SqlReturnArray</code> implementation that returns a list of domain entities.
  *
- * @param <T>
+ * @param <T> Domain entity type
  */
 @AllArgsConstructor
 public class SqlListStructArray<T> extends SqlReturnArray {

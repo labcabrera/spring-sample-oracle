@@ -1,4 +1,4 @@
-package org.lab.samples.oracle.rest;
+package org.lab.samples.oracle.rest.participant;
 
 import org.lab.samples.oracle.service.participant.oracle.ParticipantOracleService;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package org.lab.samples.oracle.model;
+package org.lab.samples.oracle.model.participant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +18,6 @@ import lombok.Setter;
  * NOTA: hay que tener en cuenta que por un lado se estan mapeando los nombres de la tabla y por otro lado los nombres
  * del objeto de Oracle de intercambio, que no coinciden. Por ello las anotaciones de JPA y los nombres no coinciden.
  * 
- * @author Arquitectura
  */
 @Entity
 @Table(name = "MPD_GEN_PARTICIPANTE")

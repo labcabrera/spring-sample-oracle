@@ -5,7 +5,9 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.lab.samples.oracle.model.Claim;
+import org.apache.commons.lang3.NotImplementedException;
+import org.lab.samples.oracle.model.participant.claim.OSinAccInS;
+import org.lab.samples.oracle.model.participant.claim.OSinAccOutS;
 import org.lab.samples.oracle.service.claim.ClaimService;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
@@ -19,11 +21,11 @@ import oracle.jdbc.internal.OracleTypes;
 
 @Service
 @Slf4j
-public class ClaimServiceJdbc implements ClaimService {
+public class ClaimSpringJdbcService implements ClaimService {
 
 	private final SimpleJdbcCall jdbcCall;
 
-	public ClaimServiceJdbc(DataSource dataSource) {
+	public ClaimSpringJdbcService(DataSource dataSource) {
 		//@formatter:off
 		jdbcCall = new SimpleJdbcCall(dataSource)
 			.withProcedureName("MPG_K_EX_SINIESTRO_ACCIDENTE.PR_PROCESA_PETICION")
@@ -39,14 +41,12 @@ public class ClaimServiceJdbc implements ClaimService {
 		//@formatter:on
 	}
 
-	public String execute(Claim siniestro) {
-		log.info("Executing query");
-		// TODO invalid conversion object to struct
-		SqlParameterSource in = new MapSqlParameterSource().addValue("P_R_SINIESTRO_ACC", siniestro);
+	@Override
+	public OSinAccOutS execute(OSinAccInS claim) {
+		SqlParameterSource in = new MapSqlParameterSource().addValue("P_R_SINIESTRO_ACC", claim);
 		Map<String, Object> response = jdbcCall.execute(in);
 		log.info("Result: {}", response);
-		return "TODO-JDBC";
-
+		throw new NotImplementedException("Not implemented");
 	}
 
 }

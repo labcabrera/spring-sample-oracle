@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.pool.OracleDataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.mapfre.dgtp.samples.pljpa.repositories")
+@EnableJpaRepositories(basePackages = "org.lab.samples.oracle.repositories")
 @Slf4j
 public class DatabaseConfiguration {
 

@@ -2,13 +2,16 @@ package org.lab.samples.oracle.service.participant;
 
 import java.util.List;
 
-import org.lab.samples.oracle.model.Participant;
+import org.lab.samples.oracle.model.participant.Participant;
 
+/**
+ * Basic participant CRUD service.
+ */
 public interface ParticipantService {
 
 	List<Participant> findAll();
 
-	List<Participant> find(Participant beanQuery);
+	List<Participant> find(Participant example);
 
 	Participant findById(Long id);
 
