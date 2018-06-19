@@ -32,11 +32,11 @@ public class ParticipantController {
 	private ParticipantServiceJpa serviceJpa;
 
 	@Autowired
-	private ParticipantOracleProcedureService participantFunctionService;
+	private ParticipantOracleProcedureService participantOracleProcedureService;
 
-	@GetMapping("/oracle-function/:id")
+	@GetMapping("/oracle-function/{id}")
 	public ResponseEntity<Participant> findSpringOracleById(@PathVariable Long id) {
-		Participant participant = participantFunctionService.findById(id);
+		Participant participant = participantOracleProcedureService.findById(id);
 		if (participant == null) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -45,7 +45,7 @@ public class ParticipantController {
 
 	@PostMapping("/oracle-function")
 	public List<Participant> findSpringOracle(@RequestBody Participant beanQuery) {
-		return participantFunctionService.find(beanQuery);
+		return participantOracleProcedureService.find(beanQuery);
 	}
 
 	@GetMapping("/jdbc")
