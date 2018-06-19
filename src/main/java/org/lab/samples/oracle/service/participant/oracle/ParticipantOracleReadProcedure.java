@@ -27,10 +27,9 @@ public class ParticipantOracleReadProcedure extends StoredProcedure {
 		this.structMapper = new CustomStructMapper<>(Participant.class, definitionService);
 
 		SqlReturnArray sqlReturn = new SqlListStructArray<>(structMapper);
-
 		setFunction(true);
-		declareParameter(new SqlOutParameter("return", Types.ARRAY, "O_AMD_GNL_PAR_ST", sqlReturn));
-		declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, "O_AMD_GNL_PAR_S"));
+		declareParameter(new SqlOutParameter("return", Types.ARRAY, Participant.ORACLE_LIST_NAME, sqlReturn));
+		declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, Participant.ORACLE_TYPE_NAME));
 		compile();
 	}
 

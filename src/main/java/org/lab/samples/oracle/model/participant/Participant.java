@@ -25,6 +25,9 @@ import lombok.Setter;
 @Setter
 public class Participant {
 
+	public static final String ORACLE_TYPE_NAME = "O_AMD_GNL_PAR_S";
+	public static final String ORACLE_LIST_NAME = "O_AMD_GNL_PAR_ST";
+
 	@Id
 	@Column(name = "COD_PART_PROC")
 	private Long par_prc_prc_val;
