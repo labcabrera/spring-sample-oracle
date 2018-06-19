@@ -61,7 +61,7 @@ propósito del ejemplo.
 
 === Acceso utilizando Spring Oracle
 
-En este caso para cada procedimiento almacenado tendremos que extender la clase `org.springframework.jdbc.object.StoredProcedure` (incluso en el caso de que
+En este caso *para cada procedimiento almacenado tendremos que extender* la clase `org.springframework.jdbc.object.StoredProcedure` (incluso en el caso de que
 estemos invocando una función de Oracle en lugar de un procedimiento almacenado) del siguiente modo:
 
 [code,java]
