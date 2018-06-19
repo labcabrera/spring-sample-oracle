@@ -15,13 +15,13 @@ import com.mapfre.dgtp.samples.pljpa.model.Participant;
 import com.mapfre.dgtp.samples.pljpa.oracle.GaiaStructMapper;
 import com.mapfre.dgtp.samples.pljpa.oracle.StructDefinitionService;
 
-public class ParticipantInsertProcedure extends StoredProcedure {
+public class ParticipantOracleDeleteProcedure extends StoredProcedure {
 
-	private static final String FUNCTION_NAME = "dl_gnl_par.f_inr";
+	private static final String FUNCTION_NAME = "dl_gnl_par.f_dlt";
 
 	private final GaiaStructMapper<Participant> structMapper;
 
-	public ParticipantInsertProcedure(DataSource dataSource, StructDefinitionService definitionService) {
+	public ParticipantOracleDeleteProcedure(DataSource dataSource, StructDefinitionService definitionService) {
 		super(dataSource, FUNCTION_NAME);
 		this.structMapper = new GaiaStructMapper<>(Participant.class, definitionService);
 
@@ -30,15 +30,13 @@ public class ParticipantInsertProcedure extends StoredProcedure {
 		setFunction(true);
 		declareParameter(new SqlOutParameter("return", Types.STRUCT, "O_AMD_GNL_PAR_S", sqlReturn));
 		declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, "O_AMD_GNL_PAR_S"));
-		declareParameter(new SqlParameter("p_usr_val", Types.VARCHAR));
 
 		compile();
 	}
 
-	public Participant insert(Participant entity, String username) {
+	public Participant delete(Participant entity) {
 		SqlStructValue<Participant> structValue = new SqlStructValue<>(entity, structMapper);
-
-		Map<String, Object> resultMap = super.execute(structValue, username);
+		Map<String, Object> resultMap = super.execute(structValue);
 		return (Participant) resultMap.get("return");
 	}
 

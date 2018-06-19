@@ -1,4 +1,4 @@
-package com.mapfre.dgtp.samples.pljpa.service.participant;
+package com.mapfre.dgtp.samples.pljpa.service.participant.spring;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,11 +22,11 @@ import oracle.sql.StructDescriptor;
 
 @Service
 @Slf4j
-public class ParticipantServiceJdbc implements ParticipantService {
+public class ParticipantSpringJdbcService implements ParticipantService {
 
 	private final SimpleJdbcCall jdbcCall;
 
-	public ParticipantServiceJdbc(DataSource dataSource) {
+	public ParticipantSpringJdbcService(DataSource dataSource) {
 		//@formatter:off
 		jdbcCall = new SimpleJdbcCall(dataSource)
 			.withFunctionName("dl_gnl_par.f_get")
@@ -59,7 +59,7 @@ public class ParticipantServiceJdbc implements ParticipantService {
 		log.info("Executing query");
 
 		Participant queryObject = new Participant();
-		//queryObject.setId(1L);
+		// queryObject.setId(1L);
 
 		try {
 			Connection connection = jdbcCall.getJdbcTemplate().getDataSource().getConnection();
@@ -77,6 +77,36 @@ public class ParticipantServiceJdbc implements ParticipantService {
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
+		return null;
+	}
+
+	@Override
+	public List<Participant> find(Participant beanQuery) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Participant findById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Participant insert(Participant entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Participant update(Participant entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Participant delete(Long id) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

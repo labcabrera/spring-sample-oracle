@@ -17,13 +17,13 @@ import com.mapfre.dgtp.samples.pljpa.oracle.GaiaStructMapper;
 import com.mapfre.dgtp.samples.pljpa.oracle.SqlListStructArray;
 import com.mapfre.dgtp.samples.pljpa.oracle.StructDefinitionService;
 
-public class ParticipantReadProcedure extends StoredProcedure {
+public class ParticipantOracleReadProcedure extends StoredProcedure {
 
 	private static final String FUNCTION_NAME = "dl_gnl_par.f_get";
 
 	private final GaiaStructMapper<Participant> structMapper;
 
-	public ParticipantReadProcedure(DataSource dataSource, StructDefinitionService definitionService) {
+	public ParticipantOracleReadProcedure(DataSource dataSource, StructDefinitionService definitionService) {
 		super(dataSource, FUNCTION_NAME);
 		this.structMapper = new GaiaStructMapper<>(Participant.class, definitionService);
 

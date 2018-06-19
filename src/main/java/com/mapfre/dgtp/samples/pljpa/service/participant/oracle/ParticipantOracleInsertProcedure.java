@@ -15,13 +15,13 @@ import com.mapfre.dgtp.samples.pljpa.model.Participant;
 import com.mapfre.dgtp.samples.pljpa.oracle.GaiaStructMapper;
 import com.mapfre.dgtp.samples.pljpa.oracle.StructDefinitionService;
 
-public class ParticipantUpdateProcedure extends StoredProcedure {
+public class ParticipantOracleInsertProcedure extends StoredProcedure {
 
-	private static final String FUNCTION_NAME = "dl_gnl_par.f_upd";
+	private static final String FUNCTION_NAME = "dl_gnl_par.f_inr";
 
 	private final GaiaStructMapper<Participant> structMapper;
 
-	public ParticipantUpdateProcedure(DataSource dataSource, StructDefinitionService definitionService) {
+	public ParticipantOracleInsertProcedure(DataSource dataSource, StructDefinitionService definitionService) {
 		super(dataSource, FUNCTION_NAME);
 		this.structMapper = new GaiaStructMapper<>(Participant.class, definitionService);
 
@@ -35,7 +35,7 @@ public class ParticipantUpdateProcedure extends StoredProcedure {
 		compile();
 	}
 
-	public Participant update(Participant entity, String username) {
+	public Participant insert(Participant entity, String username) {
 		SqlStructValue<Participant> structValue = new SqlStructValue<>(entity, structMapper);
 
 		Map<String, Object> resultMap = super.execute(structValue, username);
