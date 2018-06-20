@@ -1,12 +1,14 @@
 package org.lab.samples.oracle.jdbc;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.lab.samples.oracle.annotation.OracleCollection;
 import org.lab.samples.oracle.annotation.OracleStruct;
 import org.lab.samples.oracle.jdbc.mapper.StructMapperService;
 import org.springframework.beans.BeanWrapper;
@@ -16,9 +18,12 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.jdbc.support.oracle.BeanPropertyStructMapper;
 import org.springframework.data.jdbc.support.oracle.StructMapper;
 import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
 import oracle.sql.STRUCT;
 import oracle.sql.StructDescriptor;
 
@@ -45,68 +50,72 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 		Object[] values = new Object[columns];
 		for (int i = 1; i <= columns; i++) {
 			String column = JdbcUtils.lookupColumnName(rsmd, i).toLowerCase();
-			PropertyDescriptor fieldMeta = (PropertyDescriptor) mappedFields.get(column);
-			if (fieldMeta != null) {
-				BeanWrapper bw = new BeanWrapperImpl(source);
-				if (bw.isReadableProperty(fieldMeta.getName())) {
-					try {
-						if (log.isDebugEnabled()) {
-							log.debug("Mapping column named '{}' to property '{}'", column, fieldMeta.getName());
-						}
-						values[i - 1] = bw.getPropertyValue(fieldMeta.getName());
-					}
-					catch (NotReadablePropertyException ex) {
-						throw new DataRetrievalFailureException(
-							"Unable to map column " + column + " to property " + fieldMeta.getName(), ex);
-					}
+			PropertyDescriptor propertyDescriptor = (PropertyDescriptor) mappedFields.get(column);
+			if (propertyDescriptor == null) {
+				continue;
+			}
+			BeanWrapper bw = new BeanWrapperImpl(source);
+			if (bw.isReadableProperty(propertyDescriptor.getName())) {
+				try {
+					log.debug("Mapping column named '{}' to property '{}'", column, propertyDescriptor.getName());
+					Object target = bw.getPropertyValue(propertyDescriptor.getName());
+					target = checkStructConversion(target, source, propertyDescriptor, conn);
+					values[i - 1] = target;
 				}
-				else {
-					log.warn("Unable to access the getter for {}. Check that get{} is declared and has public access.",
-						fieldMeta.getName(), StringUtils.capitalize(fieldMeta.getName()));
+				catch (NotReadablePropertyException ex) {
+					throw new DataRetrievalFailureException(
+						"Unable to map column " + column + " to property " + propertyDescriptor.getName(), ex);
 				}
 			}
+			else {
+				log.warn("Unable to access the getter for {}. Check that get{} is declared and has public access.",
+					propertyDescriptor.getName(), StringUtils.capitalize(propertyDescriptor.getName()));
+			}
+
 		}
-		// Modified from spring-data-oracle to recursive STRUCT conversion
+		return new STRUCT(descriptor, conn, values);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected Object checkStructConversion(Object source, Object parent, PropertyDescriptor descriptor,
+		Connection connection) {
+
 		try {
-			recursiveStructConversion(values, conn);
-			return new STRUCT(descriptor, conn, values);
+			if (source != null) {
+				if (List.class.isAssignableFrom(source.getClass())) {
+					// En el caso de ser una coleccion determinamos el tipo a partir de la anotacion OracleCollection
+					// declarada en el objeto que define la lista
+					Assert.notNull(parent, "Parent object is required to determine @OracleCollection annotation");
+
+					List list = (List) source;
+					Object[] values = new Object[list.size()];
+					for (int i = 0; i < list.size(); i++) {
+						values[i] = checkStructConversion(list.get(i), source, descriptor, connection);
+					}
+					String collectionFieldName = descriptor.getName();
+					Field collectionField = parent.getClass().getDeclaredField(collectionFieldName);
+					OracleCollection annotation = collectionField.getAnnotation(OracleCollection.class);
+					String oracleCollectionName = annotation.value();
+
+					Assert.notNull(annotation, "Missing @OracleCollection on field " + collectionField + " in class "
+						+ parent.getClass().getName());
+
+					ArrayDescriptor oracleArrayDescriptor = new ArrayDescriptor(oracleCollectionName, connection);
+					ARRAY oracleArray = new ARRAY(oracleArrayDescriptor, connection, values);
+					return oracleArray;
+				}
+				else if (source.getClass().getAnnotation(OracleStruct.class) != null) {
+					String typeName = source.getClass().getAnnotation(OracleStruct.class).value();
+					log.info("Mapping {} to Oracle STRUCT {}", source.getClass().getSimpleName(), typeName);
+					StructMapper mapper = mapperService.mapper(source.getClass());
+					return mapper.toStruct(source, connection, typeName);
+				}
+			}
+			return source;
 		}
 		catch (Exception ex) {
-			throw new SQLException("Oracle STRUCT conversion error using mappedClass " + mappedClass.getName(), ex);
+			throw new RuntimeException("Error mapping " + source);
 		}
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected void recursiveStructConversion(Object[] values, Connection connection) throws SQLException {
-		for (int i = 0; i < values.length; i++) {
-			Object source = values[i];
-			if (source != null) {
-				if (source.getClass().getAnnotation(OracleStruct.class) != null) {
-					Object resolved = checkStructConversion(source, connection);
-					values[i] = resolved;
-				}
-				else if (List.class.isAssignableFrom(source.getClass())) {
-					List list = (List) source;
-					for (int index = 0; index < list.size(); index++) {
-						list.set(index, checkStructConversion(list.get(index), connection));
-					}
-				}
-			}
-		}
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected Object checkStructConversion(Object source, Connection connection) throws SQLException {
-		if (source != null) {
-			String typeName;
-			if (source.getClass().getAnnotation(OracleStruct.class) != null) {
-				typeName = source.getClass().getAnnotation(OracleStruct.class).value();
-				log.info("Mapping {} to Oracle STRUCT {}", source.getClass().getSimpleName(), typeName);
-				StructMapper mapper = mapperService.mapper(source.getClass());
-				return mapper.toStruct(source, connection, typeName);
-			}
-		}
-		return source;
 	}
 
 }

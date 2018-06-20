@@ -3,6 +3,8 @@ package org.lab.samples.oracle.model.claim;
 import java.util.Date;
 import java.util.List;
 
+import org.lab.samples.oracle.annotation.OracleCollection;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +26,10 @@ public class OSinAccInS {
 	private String tipoExpediente;
 	private String claseExpdte;
 	private String nuuma;
+
+	@OracleCollection("O_DESCRIPCION_ST")
 	private List<ODescripcionS> descripcion;
+
 	private OCorresExpdteS correspondencia;
 	private OComunicanteS comunicante;
 	private OFederacionS federacion;

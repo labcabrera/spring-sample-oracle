@@ -2,6 +2,7 @@ package org.lab.samples.oracle.model.claim;
 
 import java.util.List;
 
+import org.lab.samples.oracle.annotation.OracleCollection;
 import org.lab.samples.oracle.annotation.OracleStruct;
 
 import lombok.Getter;
@@ -24,7 +25,10 @@ public class OAccidenteS {
 	private String distAccidentado;
 	private String lugarOcur;
 	private String horaOcur;
+
+	@OracleCollection("O_DESCRIPCION_ST")
 	private List<ODescripcionS> formaOcur;
+
 	private OCausanteS causante;
 	private String cliRecomendada;
 	private List<ODescripcionS> danosTerceros;
