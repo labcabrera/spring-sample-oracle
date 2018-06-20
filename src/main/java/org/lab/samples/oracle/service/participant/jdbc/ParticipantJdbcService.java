@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.hibernate.cfg.NotYetImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.lab.samples.oracle.model.participant.Participant;
 import org.lab.samples.oracle.service.participant.ParticipantService;
 import org.springframework.stereotype.Service;
@@ -75,31 +75,31 @@ public class ParticipantJdbcService implements ParticipantService {
 		catch (SQLException ex) {
 			throw new RuntimeException(ex);
 		}
-		throw new NotYetImplementedException();
+		throw new NotImplementedException("Not implemented");
 	}
 
 	@Override
 	public List<Participant> find(Participant beanQuery) {
-		throw new NotYetImplementedException();
+		throw new NotImplementedException("Not implemented");
 	}
 
 	@Override
 	public Participant findById(Long id) {
-		throw new NotYetImplementedException();
+		throw new NotImplementedException("Not implemented");
 	}
 
 	@Override
 	public Participant insert(Participant entity) {
-		throw new NotYetImplementedException();
+		throw new NotImplementedException("Not implemented");
 	}
 
 	@Override
 	public Participant update(Participant entity) {
-		throw new NotYetImplementedException();
+		throw new NotImplementedException("Not implemented");
 	}
 
 	@Override
 	public Participant delete(Long id) {
-		throw new NotYetImplementedException();
+		throw new NotImplementedException("Not implemented");
 	}
 }

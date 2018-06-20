@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public class AbstractParticipantController {
+public abstract class AbstractParticipantController {
 
 	private final ParticipantService service;
 

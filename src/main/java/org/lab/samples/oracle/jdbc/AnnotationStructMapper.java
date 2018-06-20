@@ -26,6 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 import oracle.sql.STRUCT;
 import oracle.sql.StructDescriptor;
 
+/**
+ * <code>StructMapper</code> implementation using custom annotations.
+ *
+ * @param <T> Mapped class.
+ * 
+ * @see org.lab.samples.oracle.annotation.OracleField
+ */
 @Slf4j
 public class AnnotationStructMapper<T> implements StructMapper<T> {
 
@@ -129,8 +136,8 @@ public class AnnotationStructMapper<T> implements StructMapper<T> {
 				try {
 					Object value = attr[index - 1];
 					if (log.isDebugEnabled()) {
-						log.debug("Mapping column '" + column + "' to property '" + pd.getName() + "' of type "
-							+ pd.getPropertyType());
+						log.debug("Mapping column '{}' to property '{}' of type {}", column, pd.getName(),
+							pd.getPropertyType());
 					}
 					bw.setPropertyValue(pd.getName(), value);
 				}

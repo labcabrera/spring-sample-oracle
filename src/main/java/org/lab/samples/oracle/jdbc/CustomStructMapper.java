@@ -34,24 +34,19 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 	@Override
 	public STRUCT toStruct(T source, Connection conn, String typeName) throws SQLException {
 		Map<String, PropertyDescriptor> mappedFields = getMappedFields();
-
 		StructDescriptor descriptor = definitionService.get(typeName, conn);
 		ResultSetMetaData rsmd = descriptor.getMetaData();
 		int columns = rsmd.getColumnCount();
 		Object[] values = new Object[columns];
 		for (int i = 1; i <= columns; i++) {
 			String column = JdbcUtils.lookupColumnName(rsmd, i).toLowerCase();
-			
-			
-			
 			PropertyDescriptor fieldMeta = (PropertyDescriptor) mappedFields.get(column);
 			if (fieldMeta != null) {
 				BeanWrapper bw = new BeanWrapperImpl(source);
 				if (bw.isReadableProperty(fieldMeta.getName())) {
 					try {
 						if (log.isDebugEnabled()) {
-							log.debug("Mapping column named \"" + column + "\"" + " to property \""
-								+ fieldMeta.getName() + "\"");
+							log.debug("Mapping column named '{}' to property '{}'", column, fieldMeta.getName());
 						}
 						values[i - 1] = bw.getPropertyValue(fieldMeta.getName());
 					}
@@ -61,13 +56,12 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 					}
 				}
 				else {
-					log.warn("Unable to access the getter for " + fieldMeta.getName() + ".  Check that " + "get"
-						+ StringUtils.capitalize(fieldMeta.getName()) + " is declared and has public access.");
+					log.warn("Unable to access the getter for {}. Check that get{} is declared and has public access.",
+						fieldMeta.getName(), StringUtils.capitalize(fieldMeta.getName()));
 				}
 			}
 		}
-
-		// Modified from spring-data-oracle to recursive struct conversion
+		// Modified from spring-data-oracle to recursive STRUCT conversion
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] == null) {
 				continue;

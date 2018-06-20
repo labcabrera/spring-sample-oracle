@@ -5,7 +5,7 @@ import org.lab.samples.oracle.model.claim.OSinAccOutS;
 import org.lab.samples.oracle.service.claim.ClaimService;
 import org.springframework.web.bind.annotation.PostMapping;
 
-public class AbstractClaimController {
+public abstract class AbstractClaimController {
 
 	private final ClaimService service;
 

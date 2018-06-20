@@ -12,6 +12,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.pool.OracleDataSource;
 
+/**
+ * Oracle <code>DataSource</code> configuration.
+ */
 @Configuration
 @EnableJpaRepositories(basePackages = "org.lab.samples.oracle.repositories")
 @Slf4j

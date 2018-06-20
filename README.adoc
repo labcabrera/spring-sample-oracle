@@ -1,8 +1,5 @@
 = Oracle stored procedure client sample application
 
-:data-uri:
-:toc:
-:toclevels: 3
 :important-caption: :heavy_exclamation_mark:
 
 == Introducción
@@ -204,7 +201,6 @@ public class ClaimSpringJdbcService implements ClaimService {
   public OSinAccOutS execute(OSinAccInS claim) {
     ...
   }
-
 }
 ----
 

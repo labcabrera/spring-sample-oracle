@@ -22,6 +22,7 @@ public class SqlListStructArray<T> extends SqlReturnArray {
 
 	private final StructMapper<T> mapper;
 
+	@Override
 	public Object getTypeValue(CallableStatement cs, int i, int sqlType, String typeName) throws SQLException {
 		ARRAY array = (ARRAY) cs.getObject(i);
 		if (array == null) {

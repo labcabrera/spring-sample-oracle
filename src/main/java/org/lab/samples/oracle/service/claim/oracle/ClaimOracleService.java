@@ -17,6 +17,7 @@ public class ClaimOracleService implements ClaimService {
 		siniestrosStoredProcedure = new ClaimOracleStoredProcedure(dataSource, definitionService);
 	}
 
+	@Override
 	public OSinAccOutS execute(OSinAccInS pOSinAccInS) {
 		return siniestrosStoredProcedure.executeProc(pOSinAccInS);
 	}
