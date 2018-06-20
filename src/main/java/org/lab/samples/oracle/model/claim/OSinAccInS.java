@@ -27,13 +27,17 @@ public class OSinAccInS {
 	private String claseExpdte;
 	private String nuuma;
 
+	private OCorresExpdteS correspondencia;
+
+	private OComunicanteS comunicante;
+
+	private OFederacionS federacion;
+
+	private OColegioS colegio;
+
+	private OAccidenteS accidente;
+
 	@OracleCollection("O_DESCRIPCION_ST")
 	private List<ODescripcionS> descripcion;
-
-	private OCorresExpdteS correspondencia;
-	private OComunicanteS comunicante;
-	private OFederacionS federacion;
-	private OColegioS colegio;
-	private OAccidenteS accidente;
 
 }

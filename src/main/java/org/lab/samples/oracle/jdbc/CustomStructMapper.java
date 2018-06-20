@@ -28,8 +28,6 @@ import oracle.sql.STRUCT;
 import oracle.sql.StructDescriptor;
 
 @Slf4j
-// TODO definir sistema de lectura de propiedades basado en anotaciones en lugar de leer el descriptor de oracle a
-// traves de la conexion (tanto en el fromStruct como en el toStruct)
 public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 
 	private final StructDefinitionService definitionService;
