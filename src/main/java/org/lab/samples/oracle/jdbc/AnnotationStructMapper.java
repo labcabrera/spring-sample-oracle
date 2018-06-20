@@ -53,11 +53,11 @@ public class AnnotationStructMapper<T> implements StructMapper<T> {
 				OracleField annotation = declaredField.getAnnotation(OracleField.class);
 				if (annotation != null) {
 					String oracleFieldValue = annotation.value();
-					log.info("Mapping {} to field {} using annotation name", oracleFieldValue, name);
+					log.debug("Mapping {} to field {} using annotation name", oracleFieldValue, name);
 					mappedFields.put(oracleFieldValue, pd);
 				}
 				else {
-					log.info("Mapping {} field using field name", name);
+					log.debug("Mapping {} field using field name", name);
 					mappedFields.put(name, pd);
 				}
 			}

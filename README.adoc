@@ -1,13 +1,13 @@
-= Ejemplo de acceso a procedimientos de Oracle
+= Oracle stored procedure client sample application
 
-== Introduccion
+== Introducción
 
-Este es un ejemplo de diferentes formas de invocar logicas de negocio en Oracle a través de JDBC utilizando:
+Este es un ejemplo de diferentes formas de invocar lógicas de negocio en Oracle a través de JDBC utilizando:
 
-* JDBC: estándar de java sin utilizar librerías externas.
-* Spring JDBC: ejemplo de uso de la clase `SimpleJdbcCall` de Spring Data para simplificar las operaciones JDBC.
-* https://github.com/spring-projects/spring-data-jdbc-ext/[Spring Oracle]: librería descontinuada de Spring para Oracle.
-* JPA: acceso directo a las tablas sin utilizar las lógicas de negocio de Oracle.
+* *JDBC*: estándar de java sin utilizar librerías externas.
+* *Spring JDBC*: ejemplo de uso de la clase `SimpleJdbcCall` de Spring Data para simplificar las operaciones JDBC.
+* *Spring Oracle*: librería descontinuada de Spring para Oracle.
+* *JPA*: acceso directo a las tablas sin utilizar las lógicas de negocio de Oracle.
 
 En este ejemplo veremos:
 
@@ -15,68 +15,70 @@ En este ejemplo veremos:
 * Ejemplos de acceso utilizando funciones.
 * Comportamiento con beans con estructuras anidadas complejas. 
 
-*Spring Data JDBC Extensions es una librería descontinuada de Spring*.
-
 == Participantes
 
-A la hora de definir la entidad con el que mapearemos los resultaos tenemos que tener en cuenta dos cosas:
-
-* En el caso de acceder a través de *procedimientos almacenados* no utilizaremos la estructura de la tabla, sino la de los objetos de negocio de Oracle.
-* En el caso de acceder a través de *JPA* los mapeos los realizaremos contra la estrutura de la tabla, no contra el objeto de negocio.
-
-En este caso tendremos (conste que esto es sólo un ejemplo y que por lo general nunca se utilizará el mismo bean para representar tanto una tabla como
-un objeto de negocio de Oracle):
+Nuestro objeto de negocio será:
 
 [code,java]
 ----
 @Entity
 @Table(name = "MPD_GEN_PARTICIPANTE")
+@Getter
+@Setter
 public class Participant {
+
+	public static final String ORACLE_TYPE_NAME = "O_AMD_GNL_PAR_S";
+	public static final String ORACLE_LIST_NAME = "O_AMD_GNL_PAR_ST";
 
 	@Id
 	@Column(name = "COD_PART_PROC")
-	private Long par_prc_prc_val;
+	@OracleField("par_prc_prc_val")
+	private Long id;
 
 	@Column(name = "NOM_PART_PROC")
-	private String nam_par_prc;
+	@OracleField("nam_par_prc")
+	private String name;
 
 	@Column(name = "DES_PART_PROC")
-	private String dsp_par_prc;
+	@OracleField("dsp_par_prc")
+	private String description;
 }
 ----
 
-siendo por ejemplo:
+Vemos que esta entidad tiene dos tipos de anotaciones:
 
-|===
-|COD_PART_PROC    | Nombre del identificador de la tabla de participantes Oracle
-|par_prc_prc_val  | Nombre del identificador del objeto de negocio de Oracle.
-|===
+* *Anotaciones de JPA* que hacen referencia a la tabla _MPD_GEN_PARTICIPANTE_.
+* *Anotaciones propias de la aplicación*: que hacen referencia al tipo de Oracle _O_AMD_GNL_PAR_S_.
 
-Al utilizar la librería de Spring Oracle es necesario que los *nombres de las entidades coincidan con los que se han definido en los objetos de negocio de Oracle*.
-Sería posible implementar nuestro propio
-https://github.com/spring-projects/spring-data-jdbc-ext/blob/master/spring-data-oracle/src/main/java/org/springframework/data/jdbc/support/oracle/BeanPropertyStructMapper.java[BeanPropertyStructMapper]
-para poder utilizar otras estrategias a la hora de mapear los campos (por ejemplo basadas en anotaciones al estilo JPA), aunque esto se sale del
-propósito del ejemplo.
-
+En este caso combinaremos las anotaciones para mostrar cómo una misma entidad puede utilizarse tanto
+para el acceso directo a la tabla de Oracle utilizando JPA como para el acceso a través de tipos de
+Oracle utilizando procedimientos almacenados y funciones.
 
 === Acceso utilizando Spring Oracle
 
-En este caso *para cada procedimiento almacenado tendremos que extender* la clase `org.springframework.jdbc.object.StoredProcedure` (incluso en el caso de que
+Una de las piedras angulares de la librería es la interface
+https://github.com/spring-projects/spring-data-jdbc-ext/blob/master/spring-data-oracle/src/main/java/org/springframework/data/jdbc/support/oracle/StructMapper.java[StructMapper].
+Esta interface establece cómo se establecen los mapeos de _STRUCTS_ de Oracle a entidades de Java y
+viceversa.
+
+La librería de Spring define la implementación
+https://github.com/spring-projects/spring-data-jdbc-ext/blob/master/spring-data-oracle/src/main/java/org/springframework/data/jdbc/support/oracle/BeanPropertyStructMapper.java[BeanPropertyStructMapper]
+que utiliza la API de reflexión de Java con ciertas limitaciones que veremos más adelante. No
+obstante podemos extender esta clase o trabajar con nuestra implementación de _StructMapper_.
+
+En este caso *para cada procedimiento almacenado tendremos que extender* la clase
+`org.springframework.jdbc.object.StoredProcedure` (incluso en el caso de que
 estemos invocando una función de Oracle en lugar de un procedimiento almacenado) del siguiente modo:
 
 [code,java]
 ----
-public class ParticipantOracleReadProcedure extends StoredProcedure {
+public class ParticipantOracleReadProcedure extends ParticipantStoredProcedure {
 
 	private static final String FUNCTION_NAME = "dl_gnl_par.f_get";
 
-	private final CustomStructMapper<Participant> structMapper;
-
-	public ParticipantOracleReadProcedure(DataSource dataSource, StructDefinitionService definitionService) {
-		super(dataSource, FUNCTION_NAME);
-		this.structMapper = new CustomStructMapper<>(Participant.class, definitionService);
-
-		SqlReturnArray sqlReturn = new SqlListStructArray<>(structMapper);
+	public ParticipantOracleReadProcedure(DataSource dataSource, StructMapperService mapperService) {
+		super(dataSource, FUNCTION_NAME, mapperService);
+		SqlReturnArray sqlReturn = new SqlListStructArray<>(mapperService.mapper(Participant.class));
 		setFunction(true);
 		declareParameter(new SqlOutParameter("return", Types.ARRAY, Participant.ORACLE_LIST_NAME, sqlReturn));
 		declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, Participant.ORACLE_TYPE_NAME));
@@ -85,30 +87,69 @@ public class ParticipantOracleReadProcedure extends StoredProcedure {
 
 	@SuppressWarnings("unchecked")
 	public List<Participant> find(Participant beanQuery) {
-		SqlStructValue<Participant> structValue = new SqlStructValue<>(beanQuery, structMapper);
+		StructMapper<Participant> mapper = mapperService.mapper(Participant.class);
+		SqlStructValue<Participant> structValue = new SqlStructValue<>(beanQuery, mapper);
 		Map<String, Object> resultMap = super.execute(structValue);
 		return (List<Participant>) resultMap.get("return");
 	}
-
 }
-
 ----
 
-Vemos que básicamente tenemos que declarar los parámetros de entrada y salida junto con los componentes necesario para su mapeo. En este caso para
-la conversión hemos utilizado una implementación modificada del `StructMapper`. Esta interface es la que abstrae todas las transformaciones de objetos
-de Oracle a sus correspondientes entidades de java y está definida del siguiente modo:
-
+Siendo `ParticipantStoredProcedure` una clase que extiende de `StoredProcedure` en la que
+simplemente definimos nuestro componente para obtener el `StructMapper` asociado a una determinada
+entidad:
 
 [code,java]
 ----
-public interface StructMapper<T> {
+public class ParticipantStoredProcedure extends StoredProcedure {
 
-    STRUCT toStruct(T source, Connection conn, String typeName) throws SQLException;
+	protected StructMapperService mapperService;
 
-    T fromStruct(STRUCT struct) throws SQLException;
+	public ParticipantStoredProcedure(DataSource dataSource, String storedProcedureName,
+		StructMapperService mapperService) {
+
+		super(dataSource, storedProcedureName);
+		this.mapperService = mapperService;
+	}
+
 }
 ----
 
+Vemos que básicamente tenemos que declarar los parámetros de entrada y salida y establecer los
+mapeadores de tipos.
+
+En el caso de las funciones con participantes trabajaremos con nuestra propia implementación de
+`StructMapper` basada en anotaciones:
+
+[code,java]
+----
+public class AnnotationStructMapper<T> implements StructMapper<T> { ... }
+----
+
+Esta implementación se basa en la utilización de nuestra anotación `@OracleField` de un modo similar
+a la anotación `@Column` de JPA que utilizaremos para mapear los tipos de una entidad con el objeto
+`STRUCT` del driver de Oracle.
+
+
+== Siniestros
+
+En este caso en lugar de trabajar con el `StructMapper` anterior basado en anotaciones trabajaremos
+con una versión extendida de la que ofrece la librería de Spring.
+
+En este caso hemos realizado algunas pequeñas adaptaciones:
+
+* Utilizar un servicio para obtener los descriptores. Esto lo hacemos para evitar que para cada
+conversión de tipos consulte a la base de datos para obtener la estructura. Dado que el resultado
+es un `Serializable` podemos almacenar en memoria está información mejorando considerablemente el
+rendimiento en la aplicación.
+
+* Adaptar el mapedor para permitir la conversión de tipos anidados. En la librería original no tiene
+en cuenta a la hora de montar el array de elementos que estos a su vez pueden ser de tipo _STRUCT_
+en lugar de tipos básicos. En este caso simplemente comprobaremos si un determinado objeto tiene
+definida la anotación `@OracleStruct` para en ese caso realizar su conversión.
+
+
+////
 La implementación que provee _spring-oracle_ es _BeanPropertyStructMapper_ sobre la que se han hecho algunos cambios:
 
 * Conversión recursiva (para que tenga en cuenta la conversión a `STRUCT` en los argumentos de entrada con entidades con anidamiento).
@@ -125,7 +166,6 @@ necesaria para realizar las conversiones (por ejemplo anotaciones, declaración 
 
 
 
-////
 
 ----
 CREATE OR REPLACE package body MPD_LD.MPG_K_EX_SINIESTRO_ACCIDENTE is

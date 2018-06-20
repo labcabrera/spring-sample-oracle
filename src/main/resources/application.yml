@@ -7,3 +7,7 @@ app:
       password: MPD_LD
     audit:
       username: demo
+      
+logging:
+  level:
+    org.lab: DEBUG
