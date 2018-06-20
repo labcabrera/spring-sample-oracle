@@ -18,12 +18,12 @@
       "entBancaria": "ENT BANCO",
       "numTel1": "91 777 888",
       "numTel2": "600 111 222",
-      "obsTel1": "string",
-      "obsTel2": "string",
+      "obsTel1": "Ob tel 1",
+      "obsTel2": "Ob tel 2",
       "obsGeneral": 0
     },
-    "cliRecomendada": "string",
-    "cliRecomendada2": "string",
+    "cliRecomendada": "cli rec",
+    "cliRecomendada2": "cli rec 2",
     "clinicas": [
       {
         "descripcion": "Descripcion de la clinica"
@@ -52,12 +52,12 @@
         "descripcion": "Descripcion lesiones"
       }
     ],
-    "locAccidentado": "string",
-    "localPostal": "string",
-    "localTfno": "string",
-    "localiAct": "string",
-    "localizacion": "string",
-    "lugarOcur": "string",
+    "locAccidentado": "loc acci",
+    "localPostal": "loc postal",
+    "localTfno": "loc telef",
+    "localiAct": "loc act",
+    "localizacion": "localizacion",
+    "lugarOcur": "lugar ocur",
     "polizas": [
       {
         "descripcion": "Descripcion polizas"
@@ -75,23 +75,23 @@
   "codPostal": "28001",
   "codPrioridad": "C",
   "colegio": {
-    "apellidos": "string",
-    "atendido": "string",
-    "cliAtendido": "string",
-    "cliRecomendada": "string",
-    "codPostal": "string",
-    "curso": "string",
-    "domicilio": "string",
-    "localidad": "string",
-    "nombre": "string",
-    "telef1": "string",
-    "telef2": "string"
+    "apellidos": "MARTINEZ",
+    "atendido": "N",
+    "cliAtendido": "CLI ATE",
+    "cliRecomendada": "CLI RECO",
+    "codPostal": "28001",
+    "curso": "CURSO",
+    "domicilio": "DOMICILIO",
+    "localidad": "LOCALIDAD",
+    "nombre": "NOMBRE",
+    "telef1": "TEL 1",
+    "telef2": "TEL 2"
   },
   "comunicante": {
-    "apellidos": "string",
-    "codRelacion": "string",
-    "nombre": "string",
-    "telefono": "string"
+    "apellidos": "APELL",
+    "codRelacion": "COD RELA",
+    "nombre": "NOMBRE",
+    "telefono": "TELEF"
   },
   "correspondencia": {
     "apartado": "string",
