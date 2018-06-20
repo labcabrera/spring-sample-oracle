@@ -1,0 +1,145 @@
+{
+  "accidente": {
+    "apelAccidentado": "DOE",
+    "apelDecla": "KUNDERA",
+    "bajaLabor": "s",
+    "causante": {
+      "dni": "70111222Z",
+      "nombre": "FRANZ",
+      "apellidos": "KAFKA",
+      "localidad": "MADROD",
+      "provincia": "string",
+      "codPostal": "28001",
+      "direccion": "CALLE MAYOR",
+      "codCia": "001",
+      "ctaBancaria": "8888888888",
+      "sucBancaria": "SU BANC",
+      "dcBanco": "001",
+      "entBancaria": "ENT BANCO",
+      "numTel1": "91 777 888",
+      "numTel2": "600 111 222",
+      "obsTel1": "string",
+      "obsTel2": "string",
+      "obsGeneral": 0
+    },
+    "cliRecomendada": "string",
+    "cliRecomendada2": "string",
+    "clinicas": [
+      {
+        "descripcion": "Descripcion de la clinica"
+      }
+    ],
+    "danosTerceros": [
+      {
+        "descripcion": "Descripcion de danos terceros"
+      }
+    ],
+    "dias": "dias",
+    "distAccidentado": "dist accidentado",
+    "domAccidentado": "dom accidentado",
+    "fallecimiento": "fallecimiento",
+    "formaOcur": [
+      {
+        "descripcion": "Descripcion forma ocur"
+      }
+    ],
+    "nomAccidentado": "nombre accidentado",
+    "nomDecla": "nombre declarante",
+    "horaOcur": "01:10",
+    "ingresado": "INGRESADO",
+    "lesiones": [
+      {
+        "descripcion": "Descripcion lesiones"
+      }
+    ],
+    "locAccidentado": "string",
+    "localPostal": "string",
+    "localTfno": "string",
+    "localiAct": "string",
+    "localizacion": "string",
+    "lugarOcur": "string",
+    "polizas": [
+      {
+        "descripcion": "Descripcion polizas"
+      }
+    ],
+    "relacion": "relacion",
+    "tfnoAccidentado": "888 555 222",
+    "tfnoDecla": "999 555 222",
+    "tratamiento": "string"
+  },
+  "claseExpdte": "W",
+  "codCausa": "Q",
+  "codGarant": "Z",
+  "codMedio": "X",
+  "codPostal": "28001",
+  "codPrioridad": "C",
+  "colegio": {
+    "apellidos": "string",
+    "atendido": "string",
+    "cliAtendido": "string",
+    "cliRecomendada": "string",
+    "codPostal": "string",
+    "curso": "string",
+    "domicilio": "string",
+    "localidad": "string",
+    "nombre": "string",
+    "telef1": "string",
+    "telef2": "string"
+  },
+  "comunicante": {
+    "apellidos": "string",
+    "codRelacion": "string",
+    "nombre": "string",
+    "telefono": "string"
+  },
+  "correspondencia": {
+    "apartado": "string",
+    "codPais": "string",
+    "codPostal": "string",
+    "email": {
+      "codCorresponde": "string",
+      "correo": "string",
+      "observaciones": "string"
+    },
+    "esc": "esc",
+    "localidad": "MADRID",
+    "nomDest": "string",
+    "nomVia": "string",
+    "numero": "string",
+    "piso": "string",
+    "portal": "string",
+    "puerta": "string",
+    "tipoVia": "string"
+  },
+  "descripcion": [
+    {
+      "descripcion": "Descripcion de la descripcion"
+    }
+  ],
+  "fec_OCURRENCIA": "2018-06-20T13:37:24.440Z",
+  "federacion": {
+    "apellidos": "GOMEZ",
+    "atendido": "MARTIN",
+    "cliAtendido": "string",
+    "cliRecomendada": "string",
+    "club": "string",
+    "codPostal": "string",
+    "dni": "string",
+    "domicilio": "string",
+    "licencia": "MADRID",
+    "localidad": "MADRID",
+    "nombre": "NOMBRE FED",
+    "tclub": "string",
+    "telClub": "string",
+    "telef1": "999 333 222",
+    "telef2": "999 333 111"
+  },
+  "horaOcurrencia": "00:01",
+  "ine": "string",
+  "localidad": "MADRID",
+  "lugarOcurrencia": "MADRID",
+  "num_POLIZA": "00000001",
+  "nuuma": "TEST1",
+  "tipoExpediente": "A"
+}
