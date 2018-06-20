@@ -1,5 +1,8 @@
 = Oracle stored procedure client sample application
 
+:data-uri:
+:toc:
+:toclevels: 3
 :important-caption: :heavy_exclamation_mark:
 
 == Introducción
@@ -146,6 +149,8 @@ a la anotación `@Column` de JPA que utilizaremos para mapear los tipos de una e
 
 == Siniestros
 
+=== Acceso utilizando Spring Oracle
+
 En este caso en lugar de trabajar con el `StructMapper` anterior basado en anotaciones trabajaremos
 con una versión extendida de la que ofrece la librería de Spring.
 
@@ -162,6 +167,46 @@ en lugar de tipos básicos. En este caso simplemente comprobaremos si un determi
 definida la anotación `@OracleStruct` para en ese caso realizar su conversión.
 
 CAPTION: faltaría realizar la conversión de tipos de vuelta, así como la de listas de estructuras.
+
+=== Acceso utilizando Spring JDBC
+
+En este caso utilizaremos el objeto `SimpleJdbcCall` del modo siguiente:
+
+[source,java]
+----
+@Service
+@Slf4j
+public class ClaimSpringJdbcService implements ClaimService {
+
+  private final SimpleJdbcCall jdbcCall;
+  private final StructDefinitionService definitionService;
+
+  public ClaimSpringJdbcService(
+      DataSource dataSource,
+      StructDefinitionService definitionService) {
+
+    this.definitionService = definitionService;
+    jdbcCall = new SimpleJdbcCall(dataSource)
+      .withProcedureName("MPG_K_EX_SINIESTRO_ACCIDENTE.PR_PROCESA_PETICION")
+      .withCatalogName("MPD_LD")
+            .withoutProcedureColumnMetaDataAccess()
+            .useInParameterNames("P_R_SINIESTRO_ACC")
+      .declareParameters(
+        new SqlParameter("P_R_SINIESTRO_ACC", OracleTypes.STRUCT, "T_R_SINIESTRO_ACC"),
+        new SqlOutParameter("O_NUM_EXPEDIENTE", Types.VARCHAR),
+        new SqlOutParameter("O_COD_ERROR", Types.VARCHAR),
+        new SqlOutParameter("O_TXT_ERROR", Types.VARCHAR)
+      );
+  }
+
+  @Override
+  @SuppressWarnings("rawtypes")
+  public OSinAccOutS execute(OSinAccInS claim) {
+    ...
+  }
+
+}
+----
 
 ////
 La implementación que provee _spring-oracle_ es _BeanPropertyStructMapper_ sobre la que se han hecho algunos cambios:
