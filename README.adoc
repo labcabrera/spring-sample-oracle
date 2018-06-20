@@ -40,21 +40,21 @@ Nuestro objeto de negocio será:
 @Setter
 public class Participant {
 
-	public static final String ORACLE_TYPE_NAME = "O_AMD_GNL_PAR_S";
-	public static final String ORACLE_LIST_NAME = "O_AMD_GNL_PAR_ST";
+  public static final String ORACLE_TYPE_NAME = "O_AMD_GNL_PAR_S";
+  public static final String ORACLE_LIST_NAME = "O_AMD_GNL_PAR_ST";
 
-	@Id
-	@Column(name = "COD_PART_PROC")
-	@OracleField("par_prc_prc_val")
-	private Long id;
+  @Id
+  @Column(name = "COD_PART_PROC")
+  @OracleField("par_prc_prc_val")
+  private Long id;
 
-	@Column(name = "NOM_PART_PROC")
-	@OracleField("nam_par_prc")
-	private String name;
+  @Column(name = "NOM_PART_PROC")
+  @OracleField("nam_par_prc")
+  private String name;
 
-	@Column(name = "DES_PART_PROC")
-	@OracleField("dsp_par_prc")
-	private String description;
+  @Column(name = "DES_PART_PROC")
+  @OracleField("dsp_par_prc")
+  private String description;
 }
 ----
 
@@ -87,24 +87,24 @@ estemos invocando una función de Oracle en lugar de un procedimiento almacenado
 ----
 public class ParticipantOracleReadProcedure extends ParticipantStoredProcedure {
 
-	private static final String FUNCTION_NAME = "dl_gnl_par.f_get";
+  private static final String FUNCTION_NAME = "dl_gnl_par.f_get";
 
-	public ParticipantOracleReadProcedure(DataSource dataSource, StructMapperService mapperService) {
-		super(dataSource, FUNCTION_NAME, mapperService);
-		SqlReturnArray sqlReturn = new SqlListStructArray<>(mapperService.mapper(Participant.class));
-		setFunction(true);
-		declareParameter(new SqlOutParameter("return", Types.ARRAY, Participant.ORACLE_LIST_NAME, sqlReturn));
-		declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, Participant.ORACLE_TYPE_NAME));
-		compile();
-	}
+  public ParticipantOracleReadProcedure(DataSource dataSource, StructMapperService mapperService) {
+    super(dataSource, FUNCTION_NAME, mapperService);
+    SqlReturnArray sqlReturn = new SqlListStructArray<>(mapperService.mapper(Participant.class));
+    setFunction(true);
+    declareParameter(new SqlOutParameter("return", Types.ARRAY, Participant.ORACLE_LIST_NAME, sqlReturn));
+    declareParameter(new SqlParameter("p_o_amd_gnl_par_s", Types.STRUCT, Participant.ORACLE_TYPE_NAME));
+    compile();
+  }
 
-	@SuppressWarnings("unchecked")
-	public List<Participant> find(Participant beanQuery) {
-		StructMapper<Participant> mapper = mapperService.mapper(Participant.class);
-		SqlStructValue<Participant> structValue = new SqlStructValue<>(beanQuery, mapper);
-		Map<String, Object> resultMap = super.execute(structValue);
-		return (List<Participant>) resultMap.get("return");
-	}
+  @SuppressWarnings("unchecked")
+  public List<Participant> find(Participant beanQuery) {
+    StructMapper<Participant> mapper = mapperService.mapper(Participant.class);
+    SqlStructValue<Participant> structValue = new SqlStructValue<>(beanQuery, mapper);
+    Map<String, Object> resultMap = super.execute(structValue);
+    return (List<Participant>) resultMap.get("return");
+  }
 }
 ----
 
@@ -116,14 +116,14 @@ entidad:
 ----
 public class ParticipantStoredProcedure extends StoredProcedure {
 
-	protected StructMapperService mapperService;
+  protected StructMapperService mapperService;
 
-	public ParticipantStoredProcedure(DataSource dataSource, String storedProcedureName,
-		StructMapperService mapperService) {
+  public ParticipantStoredProcedure(DataSource dataSource, String storedProcedureName,
+    StructMapperService mapperService) {
 
-		super(dataSource, storedProcedureName);
-		this.mapperService = mapperService;
-	}
+    super(dataSource, storedProcedureName);
+    this.mapperService = mapperService;
+  }
 
 }
 ----
@@ -183,13 +183,13 @@ necesaria para realizar las conversiones (por ejemplo anotaciones, declaración 
 
 ----
 CREATE OR REPLACE package body MPD_LD.MPG_K_EX_SINIESTRO_ACCIDENTE is
-	PROCEDURE PR_PROCESA_PETICION (P_R_SINIESTRO_ACC IN  T_R_SINIESTRO_ACC,
-								  O_NUM_EXPEDIENTE  OUT VARCHAR2,
-								  O_COD_ERROR       OUT VARCHAR2,
-								  O_TXT_ERROR       OUT VARCHAR2) IS
-	BEGIN
-		O_NUM_EXPEDIENTE := dbms_random.random;
-	END;
+  PROCEDURE PR_PROCESA_PETICION (P_R_SINIESTRO_ACC IN  T_R_SINIESTRO_ACC,
+                  O_NUM_EXPEDIENTE  OUT VARCHAR2,
+                  O_COD_ERROR       OUT VARCHAR2,
+                  O_TXT_ERROR       OUT VARCHAR2) IS
+  BEGIN
+    O_NUM_EXPEDIENTE := dbms_random.random;
+  END;
 END MPG_K_EX_SINIESTRO_ACCIDENTE;
 ----
 
