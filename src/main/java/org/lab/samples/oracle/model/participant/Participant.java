@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.lab.samples.oracle.annotation.OracleField;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,11 +32,14 @@ public class Participant {
 
 	@Id
 	@Column(name = "COD_PART_PROC")
-	private Long par_prc_prc_val;
+	@OracleField("par_prc_prc_val")
+	private Long id;
 
 	@Column(name = "NOM_PART_PROC")
-	private String nam_par_prc;
+	@OracleField("nam_par_prc")
+	private String name;
 
 	@Column(name = "DES_PART_PROC")
-	private String dsp_par_prc;
+	@OracleField("dsp_par_prc")
+	private String description;
 }

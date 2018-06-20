@@ -6,10 +6,10 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.lab.samples.oracle.internal.CustomStructMapper;
-import org.lab.samples.oracle.internal.StructDefinitionService;
-import org.lab.samples.oracle.model.participant.claim.OSinAccInS;
-import org.lab.samples.oracle.model.participant.claim.OSinAccOutS;
+import org.lab.samples.oracle.jdbc.CustomStructMapper;
+import org.lab.samples.oracle.jdbc.StructDefinitionService;
+import org.lab.samples.oracle.model.claim.OSinAccInS;
+import org.lab.samples.oracle.model.claim.OSinAccOutS;
 import org.springframework.data.jdbc.support.oracle.SqlReturnStruct;
 import org.springframework.data.jdbc.support.oracle.SqlStructValue;
 import org.springframework.data.jdbc.support.oracle.StructMapper;

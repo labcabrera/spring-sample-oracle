@@ -1,4 +1,4 @@
-package org.lab.samples.oracle.internal;
+package org.lab.samples.oracle.jdbc;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;

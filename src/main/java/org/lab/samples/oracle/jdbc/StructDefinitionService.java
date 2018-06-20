@@ -1,4 +1,4 @@
-package org.lab.samples.oracle.internal;
+package org.lab.samples.oracle.jdbc;
 
 import java.sql.Connection;
 import java.util.HashMap;

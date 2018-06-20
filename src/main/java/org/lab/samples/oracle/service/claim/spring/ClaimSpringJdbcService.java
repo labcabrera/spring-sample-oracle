@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.lab.samples.oracle.internal.StructDefinitionService;
-import org.lab.samples.oracle.model.participant.claim.OSinAccInS;
-import org.lab.samples.oracle.model.participant.claim.OSinAccOutS;
+import org.lab.samples.oracle.jdbc.StructDefinitionService;
+import org.lab.samples.oracle.model.claim.OSinAccInS;
+import org.lab.samples.oracle.model.claim.OSinAccOutS;
 import org.lab.samples.oracle.service.claim.ClaimService;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;

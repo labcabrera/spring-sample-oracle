@@ -6,4 +6,4 @@ app:
       username: MPD_LD
       password: MPD_LD
     audit:
-      username: labcabrera
+      username: demo

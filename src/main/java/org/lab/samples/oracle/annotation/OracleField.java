@@ -5,12 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Annotation used to resolve Oracle name of a given java entity.
- */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface OracleStruct {
+@Target(ElementType.FIELD)
+public @interface OracleField {
 
 	/**
 	 * Oracle entity name.

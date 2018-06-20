@@ -2,9 +2,9 @@ package org.lab.samples.oracle.service.claim.oracle;
 
 import javax.sql.DataSource;
 
-import org.lab.samples.oracle.internal.StructDefinitionService;
-import org.lab.samples.oracle.model.participant.claim.OSinAccInS;
-import org.lab.samples.oracle.model.participant.claim.OSinAccOutS;
+import org.lab.samples.oracle.jdbc.StructDefinitionService;
+import org.lab.samples.oracle.model.claim.OSinAccInS;
+import org.lab.samples.oracle.model.claim.OSinAccOutS;
 import org.lab.samples.oracle.service.claim.ClaimService;
 import org.springframework.stereotype.Repository;
 

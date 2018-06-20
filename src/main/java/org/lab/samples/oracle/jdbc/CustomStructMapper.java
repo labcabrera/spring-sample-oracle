@@ -1,4 +1,4 @@
-package org.lab.samples.oracle.internal;
+package org.lab.samples.oracle.jdbc;
 
 import java.beans.PropertyDescriptor;
 import java.sql.Connection;
@@ -41,6 +41,9 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 		Object[] values = new Object[columns];
 		for (int i = 1; i <= columns; i++) {
 			String column = JdbcUtils.lookupColumnName(rsmd, i).toLowerCase();
+			
+			
+			
 			PropertyDescriptor fieldMeta = (PropertyDescriptor) mappedFields.get(column);
 			if (fieldMeta != null) {
 				BeanWrapper bw = new BeanWrapperImpl(source);
