@@ -93,11 +93,11 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 					String collectionFieldName = descriptor.getName();
 					Field collectionField = parent.getClass().getDeclaredField(collectionFieldName);
 					OracleCollection annotation = collectionField.getAnnotation(OracleCollection.class);
+
+					Assert.notNull(annotation, "Missing @OracleCollection on field " + collectionField.getName()
+						+ " in class " + parent.getClass().getName());
+
 					String collectionName = annotation.value();
-
-					Assert.notNull(annotation, "Missing @OracleCollection on field " + collectionField + " in class "
-						+ parent.getClass().getName());
-
 					ArrayDescriptor arrayDescriptor = definitionService.arrayDescriptor(collectionName, connection);
 					ARRAY oracleArray = new ARRAY(arrayDescriptor, connection, values);
 					return oracleArray;
@@ -112,7 +112,7 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 			return source;
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("Error mapping " + source);
+			throw new RuntimeException("Error mapping " + source, ex);
 		}
 	}
 

@@ -25,25 +25,33 @@ public class OAccidenteS {
 	private String distAccidentado;
 	private String lugarOcur;
 	private String horaOcur;
-
-	@OracleCollection("O_DESCRIPCION_ST")
-	private List<ODescripcionS> formaOcur;
-
-	private OCausanteS causante;
-	private String cliRecomendada;
-	private List<ODescripcionS> danosTerceros;
-	private List<ODescripcionS> polizas;
-	private String fallecimiento;
-	private List<ODescripcionS> clinicas;
-	private String tratamiento;
-	private String ingresado;
-	private String cliRecomendada2;
-	private List<ODescripcionS> lesiones;
 	private String bajaLabor;
 	private String dias;
 	private String localizacion;
 	private String localiAct;
 	private String localPostal;
 	private String localTfno;
+	private String cliRecomendada;
+	private String fallecimiento;
+	private String tratamiento;
+	private String ingresado;
+	private String cliRecomendada2;
+
+	private OCausanteS causante;
+
+	@OracleCollection("O_DESCRIPCION_ST")
+	private List<ODescripcionS> formaOcur;
+
+	@OracleCollection("O_DESCRIPCION_ST")
+	private List<ODescripcionS> danosTerceros;
+
+	@OracleCollection("O_DESCRIPCION_ST")
+	private List<ODescripcionS> polizas;
+
+	@OracleCollection("O_DESCRIPCION_ST")
+	private List<ODescripcionS> clinicas;
+
+	@OracleCollection("O_DESCRIPCION_ST")
+	private List<ODescripcionS> lesiones;
 
 }
