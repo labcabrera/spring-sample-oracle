@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +72,12 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 			}
 
 		}
-		return new STRUCT(descriptor, conn, values);
+		try {
+			return new STRUCT(descriptor, conn, values);
+		}
+		catch (Exception ex) {
+			throw new SQLException("Error mapping class " + mappedClass.getName(), ex);
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -98,15 +104,22 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 						+ " in class " + parent.getClass().getName());
 
 					String collectionName = annotation.value();
+					log.debug("Mapping property {} as oracle array {}", collectionFieldName, collectionName);
 					ArrayDescriptor arrayDescriptor = definitionService.arrayDescriptor(collectionName, connection);
 					ARRAY oracleArray = new ARRAY(arrayDescriptor, connection, values);
 					return oracleArray;
 				}
 				else if (source.getClass().getAnnotation(OracleStruct.class) != null) {
 					String typeName = source.getClass().getAnnotation(OracleStruct.class).value();
-					log.info("Mapping {} to Oracle STRUCT {}", source.getClass().getSimpleName(), typeName);
+					log.debug("Mapping {} to Oracle STRUCT {}", source.getClass().getSimpleName(), typeName);
 					StructMapper mapper = mapperService.mapper(source.getClass());
 					return mapper.toStruct(source, connection, typeName);
+				}
+				else if (Date.class.isAssignableFrom(source.getClass())) {
+					// TODO revisar error que da en la conversion
+					Date date = (Date) source;
+					java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+					return sqlDate;
 				}
 			}
 			return source;

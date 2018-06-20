@@ -2,9 +2,12 @@ package org.lab.samples.oracle.model.claim;
 
 import java.math.BigDecimal;
 
+import org.lab.samples.oracle.annotation.OracleStruct;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@OracleStruct("O_CAUSANTE_S")
 @Getter
 @Setter
 public class OCausanteS {
