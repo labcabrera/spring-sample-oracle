@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 
 import org.lab.samples.oracle.jdbc.CustomStructMapper;
 import org.lab.samples.oracle.jdbc.StructDefinitionService;
+import org.lab.samples.oracle.jdbc.mapper.StructMapperService;
 import org.lab.samples.oracle.model.claim.OSinAccInS;
 import org.lab.samples.oracle.model.claim.OSinAccOutS;
 import org.springframework.data.jdbc.support.oracle.SqlReturnStruct;
@@ -24,9 +25,11 @@ public class ClaimOracleStoredProcedure extends StoredProcedure {
 
 	private final StructMapper<OSinAccInS> requestMapper;
 
-	public ClaimOracleStoredProcedure(DataSource dataSource, StructDefinitionService definitionService) {
+	public ClaimOracleStoredProcedure(DataSource dataSource, StructDefinitionService definitionService,
+		StructMapperService mapperService) {
+
 		super(dataSource, SPROC_NAME);
-		this.requestMapper = new CustomStructMapper<OSinAccInS>(OSinAccInS.class, definitionService);
+		this.requestMapper = new CustomStructMapper<OSinAccInS>(OSinAccInS.class, definitionService, mapperService);
 		SqlReturnStruct sqlReturn = new SqlReturnStruct(OSinAccOutS.class);
 		declareParameter(new SqlParameter("P_O_SIN_ACC_IN_S", Types.STRUCT, "O_SIN_ACC_IN_S"));
 		declareParameter(new SqlOutParameter("return", Types.STRUCT, "O_SIN_ACC_OUT_S", sqlReturn));

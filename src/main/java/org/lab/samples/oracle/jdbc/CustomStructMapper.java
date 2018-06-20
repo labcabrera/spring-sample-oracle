@@ -4,14 +4,17 @@ import java.beans.PropertyDescriptor;
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Map;
 
 import org.lab.samples.oracle.annotation.OracleStruct;
+import org.lab.samples.oracle.jdbc.mapper.StructMapperService;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.jdbc.support.oracle.BeanPropertyStructMapper;
+import org.springframework.data.jdbc.support.oracle.StructMapper;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.util.StringUtils;
 
@@ -25,10 +28,12 @@ import oracle.sql.StructDescriptor;
 public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 
 	private final StructDefinitionService definitionService;
+	private final StructMapperService mapperService;
 
-	public CustomStructMapper(Class<T> mappedClass, StructDefinitionService ds) {
+	public CustomStructMapper(Class<T> mappedClass, StructDefinitionService ds, StructMapperService mapperService) {
 		super(mappedClass);
 		this.definitionService = ds;
+		this.mapperService = mapperService;
 	}
 
 	@Override
@@ -62,20 +67,46 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 			}
 		}
 		// Modified from spring-data-oracle to recursive STRUCT conversion
-		for (int i = 0; i < values.length; i++) {
-			if (values[i] == null) {
-				continue;
-			}
-			Object obj = values[i];
-			OracleStruct oracleAnnotation = obj.getClass().getAnnotation(OracleStruct.class);
-			if (oracleAnnotation == null) {
-				continue;
-			}
-			String typename = oracleAnnotation.value();
-			log.info(String.format("Mapping %s to Oracle STRUCT %s", obj.getClass().getSimpleName(), typename));
-			STRUCT tmp = toStruct(source, conn, typename);
-			values[i] = tmp;
+		try {
+			recursiveStructConversion(values, conn);
+			return new STRUCT(descriptor, conn, values);
 		}
-		return new STRUCT(descriptor, conn, values);
+		catch (Exception ex) {
+			throw new SQLException("Oracle STRUCT conversion error using mappedClass " + mappedClass.getName(), ex);
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected void recursiveStructConversion(Object[] values, Connection connection) throws SQLException {
+		for (int i = 0; i < values.length; i++) {
+			Object source = values[i];
+			String typeName = resolveStructTypeName(source);
+			if (typeName != null) {
+				log.info("Mapping {} to Oracle STRUCT {}", source.getClass().getSimpleName(), typeName);
+				StructMapper mapper = mapperService.mapper(source.getClass());
+				STRUCT struct = mapper.toStruct(source, connection, typeName);
+				values[i] = struct;
+			}
+		}
+	}
+
+	protected String resolveStructTypeName(Object source) {
+		if (source != null) {
+			// Check class annotation
+			if (source.getClass().getAnnotation(OracleStruct.class) != null) {
+				return source.getClass().getAnnotation(OracleStruct.class).value();
+			}
+			// Check collection annotation
+			if (Collection.class.isAssignableFrom(source.getClass())) {
+				Collection<?> collection = (Collection<?>) source;
+				for (Object i : collection) {
+					if (i != null && i.getClass().getAnnotation(OracleStruct.class) != null) {
+						return i.getClass().getAnnotation(OracleStruct.class).value();
+					}
+				}
+			}
+			// TODO check array, collections, etc.
+		}
+		return null;
 	}
 }
