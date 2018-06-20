@@ -76,7 +76,7 @@ public class AnnotationStructMapper<T> implements StructMapper<T> {
 
 	@Override
 	public STRUCT toStruct(T source, Connection conn, String typeName) throws SQLException {
-		StructDescriptor descriptor = definitionService.get(typeName, conn);
+		StructDescriptor descriptor = definitionService.structDescriptor(typeName, conn);
 		ResultSetMetaData rsmd = descriptor.getMetaData();
 		int columns = rsmd.getColumnCount();
 		Object[] values = new Object[columns];

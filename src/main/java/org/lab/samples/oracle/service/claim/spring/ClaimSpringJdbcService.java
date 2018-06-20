@@ -55,7 +55,7 @@ public class ClaimSpringJdbcService implements ClaimService {
 		try {
 			Connection connection = jdbcCall.getJdbcTemplate().getDataSource().getConnection();
 
-			StructDescriptor descriptor = definitionService.get("T_R_SINIESTRO_ACC", connection);
+			StructDescriptor descriptor = definitionService.structDescriptor("T_R_SINIESTRO_ACC", connection);
 
 			ObjectMapper mapper = new ObjectMapper();
 			Map map = mapper.convertValue(claim, Map.class);

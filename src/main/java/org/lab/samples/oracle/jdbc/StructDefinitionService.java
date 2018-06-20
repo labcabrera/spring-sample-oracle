@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.sql.ArrayDescriptor;
 import oracle.sql.StructDescriptor;
 
 /**
@@ -22,26 +23,45 @@ import oracle.sql.StructDescriptor;
 @Slf4j
 public class StructDefinitionService {
 
-	private final Map<String, StructDescriptor> values;
+	private final Map<String, StructDescriptor> structDescriptorValues;
+	private final Map<String, ArrayDescriptor> arrayDescriptorValues;
 
 	public StructDefinitionService() {
-		values = new HashMap<>();
+		structDescriptorValues = new HashMap<>();
+		arrayDescriptorValues = new HashMap<>();
 	}
 
-	public StructDescriptor get(String typeName, Connection conn) {
+	public StructDescriptor structDescriptor(String typeName, Connection conn) {
 		try {
-			if (values.containsKey(typeName)) {
-				return values.get(typeName);
+			if (structDescriptorValues.containsKey(typeName)) {
+				return structDescriptorValues.get(typeName);
 			}
 			else {
-				log.info("Reading type {} descriptor", typeName);
+				log.info("Reading strucy {} descriptor", typeName);
 				StructDescriptor desc = new StructDescriptor(typeName, conn);
-				values.put(typeName, desc);
+				structDescriptorValues.put(typeName, desc);
 				return desc;
 			}
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("Error reading type descriptor " + typeName, ex);
+			throw new RuntimeException("Error reading struct descriptor " + typeName, ex);
+		}
+	}
+
+	public ArrayDescriptor arrayDescriptor(String typeName, Connection conn) {
+		try {
+			if (arrayDescriptorValues.containsKey(typeName)) {
+				return arrayDescriptorValues.get(typeName);
+			}
+			else {
+				log.info("Reading array {} descriptor", typeName);
+				ArrayDescriptor desc = new ArrayDescriptor(typeName, conn);
+				arrayDescriptorValues.put(typeName, desc);
+				return desc;
+			}
+		}
+		catch (Exception ex) {
+			throw new RuntimeException("Error reading array descriptor " + typeName, ex);
 		}
 	}
 

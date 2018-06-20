@@ -44,7 +44,7 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 	@Override
 	public STRUCT toStruct(T source, Connection conn, String typeName) throws SQLException {
 		Map<String, PropertyDescriptor> mappedFields = getMappedFields();
-		StructDescriptor descriptor = definitionService.get(typeName, conn);
+		StructDescriptor descriptor = definitionService.structDescriptor(typeName, conn);
 		ResultSetMetaData rsmd = descriptor.getMetaData();
 		int columns = rsmd.getColumnCount();
 		Object[] values = new Object[columns];
@@ -95,13 +95,13 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 					String collectionFieldName = descriptor.getName();
 					Field collectionField = parent.getClass().getDeclaredField(collectionFieldName);
 					OracleCollection annotation = collectionField.getAnnotation(OracleCollection.class);
-					String oracleCollectionName = annotation.value();
+					String collectionName = annotation.value();
 
 					Assert.notNull(annotation, "Missing @OracleCollection on field " + collectionField + " in class "
 						+ parent.getClass().getName());
 
-					ArrayDescriptor oracleArrayDescriptor = new ArrayDescriptor(oracleCollectionName, connection);
-					ARRAY oracleArray = new ARRAY(oracleArrayDescriptor, connection, values);
+					ArrayDescriptor arrayDescriptor = definitionService.arrayDescriptor(collectionName, connection);
+					ARRAY oracleArray = new ARRAY(arrayDescriptor, connection, values);
 					return oracleArray;
 				}
 				else if (source.getClass().getAnnotation(OracleStruct.class) != null) {
