@@ -1,5 +1,7 @@
 = Oracle stored procedure client sample application
 
+:important-caption: :heavy_exclamation_mark:
+
 == Introducción
 
 Este es un ejemplo de diferentes formas de invocar lógicas de negocio en Oracle a través de JDBC utilizando:
@@ -19,7 +21,7 @@ En este ejemplo veremos:
 
 Nuestro objeto de negocio será:
 
-[code,java]
+[source,java]
 ----
 @Entity
 @Table(name = "MPD_GEN_PARTICIPANTE")
@@ -70,7 +72,7 @@ En este caso *para cada procedimiento almacenado tendremos que extender* la clas
 `org.springframework.jdbc.object.StoredProcedure` (incluso en el caso de que
 estemos invocando una función de Oracle en lugar de un procedimiento almacenado) del siguiente modo:
 
-[code,java]
+[source,java]
 ----
 public class ParticipantOracleReadProcedure extends ParticipantStoredProcedure {
 
@@ -99,7 +101,7 @@ Siendo `ParticipantStoredProcedure` una clase que extiende de `StoredProcedure` 
 simplemente definimos nuestro componente para obtener el `StructMapper` asociado a una determinada
 entidad:
 
-[code,java]
+[source,java]
 ----
 public class ParticipantStoredProcedure extends StoredProcedure {
 
@@ -121,7 +123,7 @@ mapeadores de tipos.
 En el caso de las funciones con participantes trabajaremos con nuestra propia implementación de
 `StructMapper` basada en anotaciones:
 
-[code,java]
+[source,java]
 ----
 public class AnnotationStructMapper<T> implements StructMapper<T> { ... }
 ----
@@ -148,6 +150,7 @@ en cuenta a la hora de montar el array de elementos que estos a su vez pueden se
 en lugar de tipos básicos. En este caso simplemente comprobaremos si un determinado objeto tiene
 definida la anotación `@OracleStruct` para en ese caso realizar su conversión.
 
+CAPTION: faltaría realizar la conversión de tipos de vuelta, así como la de listas de estructuras.
 
 ////
 La implementación que provee _spring-oracle_ es _BeanPropertyStructMapper_ sobre la que se han hecho algunos cambios:
