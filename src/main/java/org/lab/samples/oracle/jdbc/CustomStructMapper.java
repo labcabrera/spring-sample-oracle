@@ -4,7 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.lab.samples.oracle.annotation.OracleStruct;
@@ -80,33 +80,33 @@ public class CustomStructMapper<T> extends BeanPropertyStructMapper<T> {
 	protected void recursiveStructConversion(Object[] values, Connection connection) throws SQLException {
 		for (int i = 0; i < values.length; i++) {
 			Object source = values[i];
-			String typeName = resolveStructTypeName(source);
-			if (typeName != null) {
-				log.info("Mapping {} to Oracle STRUCT {}", source.getClass().getSimpleName(), typeName);
-				StructMapper mapper = mapperService.mapper(source.getClass());
-				STRUCT struct = mapper.toStruct(source, connection, typeName);
-				values[i] = struct;
+			if (source != null) {
+				if (source.getClass().getAnnotation(OracleStruct.class) != null) {
+					Object resolved = checkStructConversion(source, connection);
+					values[i] = resolved;
+				}
+				else if (List.class.isAssignableFrom(source.getClass())) {
+					List list = (List) source;
+					for (int index = 0; index < list.size(); index++) {
+						list.set(index, checkStructConversion(list.get(index), connection));
+					}
+				}
 			}
 		}
 	}
 
-	protected String resolveStructTypeName(Object source) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected Object checkStructConversion(Object source, Connection connection) throws SQLException {
 		if (source != null) {
-			// Check class annotation
+			String typeName;
 			if (source.getClass().getAnnotation(OracleStruct.class) != null) {
-				return source.getClass().getAnnotation(OracleStruct.class).value();
+				typeName = source.getClass().getAnnotation(OracleStruct.class).value();
+				log.info("Mapping {} to Oracle STRUCT {}", source.getClass().getSimpleName(), typeName);
+				StructMapper mapper = mapperService.mapper(source.getClass());
+				return mapper.toStruct(source, connection, typeName);
 			}
-			// Check collection annotation
-			if (Collection.class.isAssignableFrom(source.getClass())) {
-				Collection<?> collection = (Collection<?>) source;
-				for (Object i : collection) {
-					if (i != null && i.getClass().getAnnotation(OracleStruct.class) != null) {
-						return i.getClass().getAnnotation(OracleStruct.class).value();
-					}
-				}
-			}
-			// TODO check array, collections, etc.
 		}
-		return null;
+		return source;
 	}
+
 }
