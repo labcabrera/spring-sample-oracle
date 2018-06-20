@@ -17,6 +17,17 @@ En este ejemplo veremos:
 * Ejemplos de acceso utilizando funciones.
 * Comportamiento con beans con estructuras anidadas complejas. 
 
+Nuestro modelo será muy sencillo. Tendremos por un lado un CRUD de una entidad sencilla (id, nombre
+y descripción) con una serie de funciones de Oracle:
+
+* __f_get__: lectura.
+* __f_inr__: inserción.
+* __f_upd__: actualización.
+* __f_del__: eliminación.
+
+Por otro lado tendremos la entidad _Claim_ correspodiente a un objeto que representa la información
+de un siniestro que tendrá una estructura anidada de entidades complejas.
+
 == Participantes
 
 Nuestro objeto de negocio será:
