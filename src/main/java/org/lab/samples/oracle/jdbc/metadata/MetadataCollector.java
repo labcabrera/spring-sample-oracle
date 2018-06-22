@@ -6,6 +6,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
@@ -17,6 +19,8 @@ import org.lab.samples.oracle.jdbc.metadata.model.OracleMappingData;
 import org.lab.samples.oracle.jdbc.metadata.model.OracleMappingField;
 import org.lab.samples.oracle.jdbc.metadata.model.OracleMappingStructData;
 import org.reflections.Reflections;
+
+import com.fasterxml.jackson.databind.type.CollectionLikeType;
 
 import lombok.extern.slf4j.Slf4j;
 import oracle.sql.StructDescriptor;
@@ -89,9 +93,40 @@ public class MetadataCollector {
 
 			OracleMappingField target = null;
 
+			UnaryOperator<String> nameNormalizer = x -> x.toUpperCase().replaceAll("_", "");
+
+			String fieldNameMatch = nameNormalizer.apply(fieldName);
+			Predicate<OracleMappingField> fieldPredicate = x -> fieldNameMatch
+				.equals(nameNormalizer.apply(x.getOracleColumnName()));
+
 			if (oracleCollection != null) {
 				String collectionName = oracleCollection.value();
 				log.debug("Mapping field '{}' as a collection '{}'", fieldName, collectionName);
+
+				List<OracleMappingField> collect = data.getFields().stream().filter(fieldPredicate)
+					.collect(Collectors.toList());
+
+				switch (collect.size()) {
+				case 1:
+					target = collect.iterator().next();
+					log.debug("Oracle bind {}", target.getOracleColumnName());
+					bindFieldInfo(target, field);
+					target.setMapped(true);
+					break;
+				case 0:
+					OracleMappingField newMapping = new OracleMappingField();
+					bindFieldInfo(newMapping, field);
+					data.registerField(newMapping);
+					break;
+				default:
+					throw new RuntimeException("Multiple candidates for field " + field.getName() + "("
+						+ field.getDeclaringClass().getName() + ")");
+				}
+
+				bindFieldInfo(target, field);
+				target.setMapped(true);
+
+				// TODO map collection info
 			}
 			else if (oracleField != null) {
 				String oracleName = oracleField.value();
@@ -100,15 +135,9 @@ public class MetadataCollector {
 			else {
 				log.debug("Mapping field as default");
 
-				String fieldNameMatch = fieldName.toUpperCase().replaceAll("_", "");
-
-				//@formatter:off
-				List<OracleMappingField> collect = data.getFields().stream()
-					.filter(x -> fieldNameMatch.equals(x.getOracleColumnName().toUpperCase().replaceAll("_", "")))
+				List<OracleMappingField> collect = data.getFields().stream().filter(fieldPredicate)
 					.collect(Collectors.toList());
 
-				//@formatter
-				
 				switch (collect.size()) {
 				case 1:
 					target = collect.iterator().next();

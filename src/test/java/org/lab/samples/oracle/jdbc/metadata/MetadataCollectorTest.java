@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lab.samples.oracle.jdbc.metadata.model.OracleMappingData;
+import org.lab.samples.oracle.jdbc.metadata.model.OracleMappingStructData;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -30,7 +30,7 @@ public class MetadataCollectorTest {
 	}
 
 	@Test
-	public void test() throws JsonProcessingException, SQLException {
+	public void test() throws Exception {
 		OracleMappingData readMetadata = collector.readMetadata("org.lab");
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -39,7 +39,11 @@ public class MetadataCollectorTest {
 		String json = mapper.writeValueAsString(readMetadata);
 		System.out.println(json);
 
-		// fail("Not yet implemented");
+		System.out.println("--- unmapped fields ---");
+		for (OracleMappingStructData i : readMetadata.getStructs()) {
+			i.getFields().stream().filter(x -> !x.getMapped()).forEach(System.out::println);
+		}
+		System.out.println("-- /unmapped fields ---");
 	}
 
 }
