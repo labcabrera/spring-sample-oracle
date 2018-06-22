@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.lab.samples.oracle.annotation.OracleCollection;
+import org.lab.samples.oracle.annotation.OracleStruct;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@OracleStruct("O_SIN_ACC_IN_S")
 @Getter
 @Setter
 public class OSinAccInS {

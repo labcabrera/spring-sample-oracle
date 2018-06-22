@@ -9,6 +9,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface OracleCollection {
 
+	/**
+	 * Oracle collection name.
+	 * 
+	 * @return
+	 */
 	String value() default "";
 
 }
